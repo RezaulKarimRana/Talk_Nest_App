@@ -4,11 +4,10 @@ import RegistrationFormComponent from "../components/registration";
 const Registration = () => {
   return (
     <>
-      <div className="w-full h-screen flex items-center justify-center">
-        <div className="w-1/4 bg-white shadow-md rounded-sm p-4 flex items-center justify-center">
-          <div>
-            <RegistrationFormComponent />
-          </div>
+      <div className="w-full h-screen flex flex-col items-center justify-center">
+        <h1 className="font-fontJotiOne text-6xl">TalkNest</h1>
+        <div className="w-1/4 bg-white shadow-md rounded-sm py-24 flex items-center justify-center">
+          <RegistrationFormComponent />
         </div>
       </div>
     </>
