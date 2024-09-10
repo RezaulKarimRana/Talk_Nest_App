@@ -1,4 +1,4 @@
-export const BackSquireIcon = () => {
+export const BackSquareIcon = () => {
   return (
     <svg
       width={24}

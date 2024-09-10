@@ -10,3 +10,7 @@
   font-family: "inter";
   src: url("../public/fonts/Inter-VariableFont_opsz\,wght.ttf");
 }
+@font-face {
+  font-family: "inter-bold";
+  src: url("../public/fonts/Inter_24pt-Bold.ttf");
+}

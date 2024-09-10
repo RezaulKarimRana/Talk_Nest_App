@@ -6,6 +6,7 @@ export default {
     fontFamily: {
       fontJotiOne: ["joti-one"],
       fontInter: ["inter"],
+      fontInterBold: ["inter-bold"],
     },
   },
   plugins: [],
