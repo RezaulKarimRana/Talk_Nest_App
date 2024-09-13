@@ -4,11 +4,12 @@ import { MessageTextIcon } from "../../svg/MessageTextIcon";
 import { BackSquareIcon } from "../../svg/BackSquareIcon";
 import { DirectBoxSendIcon } from "../../svg/DirectBoxSendIcon";
 import natureImage from "../../assets/nature.png";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
     <>
-      <div className="h-full flex flex-col justify-between py-3 px-7">
+      <div className="h-full w-1/12 flex flex-col justify-between py-3 px-7">
         <div className="flex flex-col items-center gap-y-2 relative">
           <div className="w-24 h-24 rounded-full overflow-hidden">
             <img src={natureImage} />
@@ -23,12 +24,18 @@ const Navbar = () => {
           </div>
         </div>
         <div className="flex flex-col items-center gap-y-14">
-          <div className="text-white flex w-10 h-10 items-center justify-center">
+          <Link
+            to="/"
+            className="text-white flex w-10 h-10 items-center justify-center"
+          >
             <HouseIcon />
-          </div>
-          <div className="text-white flex w-10 h-10 items-center justify-center">
+          </Link>
+          <Link
+            to="/message"
+            className="text-white flex w-10 h-10 items-center justify-center"
+          >
             <MessageTextIcon />
-          </div>
+          </Link>
         </div>
         <div className="flex items-center justify-around gap-x-2">
           <div className="text-white flex w-4 h-4 items-center justify-center">
