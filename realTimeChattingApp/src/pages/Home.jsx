@@ -1,14 +1,23 @@
 import React from "react";
 import UserLists from "../components/userList";
+import FriendRequest from "../components/friendRequest";
+import Friends from "../components/friends";
 
 const Home = () => {
   return (
     <>
-      <div className="w-11/12 grid grid-cols-[2fr,4fr]">
-        <div className="w-full h-full bg-white p-5">
+      <div className="w-11/12 grid grid-cols-[2fr,5fr] bg-white">
+        <div className="w-full p-5">
           <UserLists />
         </div>
-        <div className="w-full h-full bg-green-600">lkj</div>
+        <div className="w-full grid grid-cols-2 gap-x-5">
+          <div className="w-full p-5">
+            <FriendRequest />
+          </div>
+          <div className="w-full p-5">
+            <Friends />
+          </div>
+        </div>
       </div>
     </>
   );

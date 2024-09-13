@@ -4,8 +4,8 @@ import { UserAddIcon } from "../../svg/UserAddIcon";
 const UserLists = () => {
   return (
     <>
-      <div className="shadow-md rounded-md bg-white p-3 h-[470px] overflow-y-auto">
-        <h1 className="font-fontInter text-3xl text-[#494949]">All Users</h1>
+      <div className="shadow-md rounded-md bg-white p-5 h-[480px] overflow-y-auto">
+        <h1 className="font-fontInterBold text-xl text-[#494949]">All Users</h1>
         <div className="mt-6">
           <input
             className="w-full h-14 bg-[#F8F8F8] rounded-md placeholder:font-fontInter placeholder:text-xl pl-5 focus:outline-none"
