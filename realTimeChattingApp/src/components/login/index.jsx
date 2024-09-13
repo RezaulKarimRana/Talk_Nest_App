@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const LoginFormComponent = () => {
   return (
@@ -21,7 +22,9 @@ const LoginFormComponent = () => {
           <p className="underline text-[#4A4A4A] mt-4">forgot password?</p>
           <p className="font-fontInter text-sm  mt-5">
             Don't have an account please{" "}
-            <span className="text-[#236DB0]">sign up</span>
+            <Link to="/registration" className="text-[#236DB0] hover:underline">
+              sign up
+            </Link>
           </p>
         </form>
       </div>

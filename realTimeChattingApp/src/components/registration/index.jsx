@@ -1,10 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const RegistrationFormComponent = () => {
   return (
     <>
       <div>
         <form>
+          <div className="mt-1">
+            <label className="font-fontInter text-[#484848]">Enter Name</label>
+            <input className="w-full px-3 py-2 border rounded-md outline-none mb-4 mt-1" />
+          </div>
           <div>
             <label className="font-fontInter text-[#484848]">Enter Email</label>
             <input className="w-full px-3 py-2 border rounded-md outline-none mb-4 mt-1" />
@@ -26,7 +31,9 @@ const RegistrationFormComponent = () => {
           </button>
           <p className="font-fontInter text-sm">
             Already have an account please{" "}
-            <span className="text-[#236DB0]">sign in</span>
+            <Link to="/login" className="text-[#236DB0] hover:underline">
+              sign in
+            </Link>
           </p>
         </form>
       </div>
