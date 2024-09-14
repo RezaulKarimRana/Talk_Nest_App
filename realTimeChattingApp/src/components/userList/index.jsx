@@ -27,6 +27,216 @@ const UserLists = () => {
             <UserAddIcon />
           </div>
         </div>
+        <div className="flex items-center justify-between gap-x-2 mt-8">
+          <div className="flex items-center justify-between">
+            <div className="w-20 h-20 rounded-full overflow-hidden">
+              <img src={catImage} />
+            </div>
+            <div className="text-center">
+              <span className="font-fontInter text-[#3D3C3C] text-xl ml-4">
+                Md. Rezaul Karim
+              </span>
+            </div>
+          </div>
+          <div className="cursor-pointer text-[#292D32]">
+            <UserAddIcon />
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-x-2 mt-8">
+          <div className="flex items-center justify-between">
+            <div className="w-20 h-20 rounded-full overflow-hidden">
+              <img src={catImage} />
+            </div>
+            <div className="text-center">
+              <span className="font-fontInter text-[#3D3C3C] text-xl ml-4">
+                Md. Rezaul Karim
+              </span>
+            </div>
+          </div>
+          <div className="cursor-pointer text-[#292D32]">
+            <UserAddIcon />
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-x-2 mt-8">
+          <div className="flex items-center justify-between">
+            <div className="w-20 h-20 rounded-full overflow-hidden">
+              <img src={catImage} />
+            </div>
+            <div className="text-center">
+              <span className="font-fontInter text-[#3D3C3C] text-xl ml-4">
+                Md. Rezaul Karim
+              </span>
+            </div>
+          </div>
+          <div className="cursor-pointer text-[#292D32]">
+            <UserAddIcon />
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-x-2 mt-8">
+          <div className="flex items-center justify-between">
+            <div className="w-20 h-20 rounded-full overflow-hidden">
+              <img src={catImage} />
+            </div>
+            <div className="text-center">
+              <span className="font-fontInter text-[#3D3C3C] text-xl ml-4">
+                Md. Rezaul Karim
+              </span>
+            </div>
+          </div>
+          <div className="cursor-pointer text-[#292D32]">
+            <UserAddIcon />
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-x-2 mt-8">
+          <div className="flex items-center justify-between">
+            <div className="w-20 h-20 rounded-full overflow-hidden">
+              <img src={catImage} />
+            </div>
+            <div className="text-center">
+              <span className="font-fontInter text-[#3D3C3C] text-xl ml-4">
+                Md. Rezaul Karim
+              </span>
+            </div>
+          </div>
+          <div className="cursor-pointer text-[#292D32]">
+            <UserAddIcon />
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-x-2 mt-8">
+          <div className="flex items-center justify-between">
+            <div className="w-20 h-20 rounded-full overflow-hidden">
+              <img src={catImage} />
+            </div>
+            <div className="text-center">
+              <span className="font-fontInter text-[#3D3C3C] text-xl ml-4">
+                Md. Rezaul Karim
+              </span>
+            </div>
+          </div>
+          <div className="cursor-pointer text-[#292D32]">
+            <UserAddIcon />
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-x-2 mt-8">
+          <div className="flex items-center justify-between">
+            <div className="w-20 h-20 rounded-full overflow-hidden">
+              <img src={catImage} />
+            </div>
+            <div className="text-center">
+              <span className="font-fontInter text-[#3D3C3C] text-xl ml-4">
+                Md. Rezaul Karim
+              </span>
+            </div>
+          </div>
+          <div className="cursor-pointer text-[#292D32]">
+            <UserAddIcon />
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-x-2 mt-8">
+          <div className="flex items-center justify-between">
+            <div className="w-20 h-20 rounded-full overflow-hidden">
+              <img src={catImage} />
+            </div>
+            <div className="text-center">
+              <span className="font-fontInter text-[#3D3C3C] text-xl ml-4">
+                Md. Rezaul Karim
+              </span>
+            </div>
+          </div>
+          <div className="cursor-pointer text-[#292D32]">
+            <UserAddIcon />
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-x-2 mt-8">
+          <div className="flex items-center justify-between">
+            <div className="w-20 h-20 rounded-full overflow-hidden">
+              <img src={catImage} />
+            </div>
+            <div className="text-center">
+              <span className="font-fontInter text-[#3D3C3C] text-xl ml-4">
+                Md. Rezaul Karim
+              </span>
+            </div>
+          </div>
+          <div className="cursor-pointer text-[#292D32]">
+            <UserAddIcon />
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-x-2 mt-8">
+          <div className="flex items-center justify-between">
+            <div className="w-20 h-20 rounded-full overflow-hidden">
+              <img src={catImage} />
+            </div>
+            <div className="text-center">
+              <span className="font-fontInter text-[#3D3C3C] text-xl ml-4">
+                Md. Rezaul Karim
+              </span>
+            </div>
+          </div>
+          <div className="cursor-pointer text-[#292D32]">
+            <UserAddIcon />
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-x-2 mt-8">
+          <div className="flex items-center justify-between">
+            <div className="w-20 h-20 rounded-full overflow-hidden">
+              <img src={catImage} />
+            </div>
+            <div className="text-center">
+              <span className="font-fontInter text-[#3D3C3C] text-xl ml-4">
+                Md. Rezaul Karim
+              </span>
+            </div>
+          </div>
+          <div className="cursor-pointer text-[#292D32]">
+            <UserAddIcon />
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-x-2 mt-8">
+          <div className="flex items-center justify-between">
+            <div className="w-20 h-20 rounded-full overflow-hidden">
+              <img src={catImage} />
+            </div>
+            <div className="text-center">
+              <span className="font-fontInter text-[#3D3C3C] text-xl ml-4">
+                Md. Rezaul Karim
+              </span>
+            </div>
+          </div>
+          <div className="cursor-pointer text-[#292D32]">
+            <UserAddIcon />
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-x-2 mt-8">
+          <div className="flex items-center justify-between">
+            <div className="w-20 h-20 rounded-full overflow-hidden">
+              <img src={catImage} />
+            </div>
+            <div className="text-center">
+              <span className="font-fontInter text-[#3D3C3C] text-xl ml-4">
+                Md. Rezaul Karim
+              </span>
+            </div>
+          </div>
+          <div className="cursor-pointer text-[#292D32]">
+            <UserAddIcon />
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-x-2 mt-8">
+          <div className="flex items-center justify-between">
+            <div className="w-20 h-20 rounded-full overflow-hidden">
+              <img src={catImage} />
+            </div>
+            <div className="text-center">
+              <span className="font-fontInter text-[#3D3C3C] text-xl ml-4">
+                Md. Rezaul Karim
+              </span>
+            </div>
+          </div>
+          <div className="cursor-pointer text-[#292D32]">
+            <UserAddIcon />
+          </div>
+        </div>
       </div>
     </>
   );
