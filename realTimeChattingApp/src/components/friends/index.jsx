@@ -3,7 +3,7 @@ import friendImage from "../../assets/Friend.png";
 const Friends = () => {
   return (
     <>
-      <div className="shadow-md rounded-md bg-white p-5 h-[480px] overflow-y-auto">
+      <div className="shadow-md rounded-md bg-white p-5 h-[485px] overflow-y-auto">
         <h1 className="font-fontInterBold text-[#494949] text-xl">
           My Friends
         </h1>
