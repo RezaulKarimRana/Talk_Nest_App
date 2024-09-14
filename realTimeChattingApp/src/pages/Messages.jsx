@@ -6,10 +6,10 @@ const Messages = () => {
   return (
     <>
       <div className="w-11/12 grid grid-cols-[2fr,4fr] bg-white">
-        <div className="py-3">
+        <div className="w-full p-5">
           <Friends />
         </div>
-        <div className="py-3 px-5">
+        <div className="w-full p-5">
           <Chatting />
         </div>
       </div>
