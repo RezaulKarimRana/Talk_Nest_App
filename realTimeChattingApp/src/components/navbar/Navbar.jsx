@@ -8,7 +8,6 @@ import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const location = useLocation();
-  console.log(location.pathname);
   return (
     <>
       <div className="h-full w-1/12 flex flex-col justify-between py-3">
