@@ -26,8 +26,9 @@ const Navbar = () => {
           </div>
         </div>
         <div className="flex flex-col items-center gap-y-14">
-          <div className="grid grid-cols-3 text-center">
-            <div className="col-start-2">
+          <div className="w-full grid grid-cols-3 text-center">
+            <div></div>
+            <div>
               <Link
                 to="/"
                 className="text-white flex w-10 h-10 items-center justify-center"
@@ -36,13 +37,14 @@ const Navbar = () => {
               </Link>
             </div>
             {location.pathname === "/" ? (
-              <div className="col-start-4 bg-white pl-1 py-3"></div>
+              <div className="text-end bg-white w-1 h-10 text-white ml-auto mr-0"></div>
             ) : (
               <div></div>
             )}
           </div>
-          <div className="grid grid-cols-3 text-center">
-            <div className="col-start-2">
+          <div className="w-full grid grid-cols-3 text-center">
+            <div></div>
+            <div>
               <Link
                 to="/message"
                 className="text-white flex w-10 h-10 items-center justify-center"
@@ -51,7 +53,7 @@ const Navbar = () => {
               </Link>
             </div>
             {location.pathname === "/message" ? (
-              <div className="col-start-4 bg-white pl-1 py-3"></div>
+              <div className="text-end bg-white w-1 h-10 text-white ml-auto mr-0"></div>
             ) : (
               <div></div>
             )}
