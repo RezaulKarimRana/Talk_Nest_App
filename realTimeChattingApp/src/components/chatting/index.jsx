@@ -5,7 +5,7 @@ import { GalleryIcon } from "../../svg/GalleryIcon";
 const Chatting = () => {
   return (
     <>
-      <div className="w-full h-[90vh] bg-white shadow-md">
+      <div className="w-full h-[92vh] bg-white shadow-md">
         <div className="py-4 bg-[#F9F9F9] px-6 rounded-md">
           <div className="flex items-center gap-x-2">
             <div className="w-10 h-10 rounded-full bg-[#D9D9D9] overflow-hidden"></div>
