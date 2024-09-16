@@ -9,5 +9,5 @@ export default {
       fontInterBold: ["inter-bold"],
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar")],
 };
