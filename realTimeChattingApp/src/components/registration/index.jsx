@@ -27,7 +27,7 @@ const RegistrationFormComponent = () => {
               onChange={formik.handleChange}
               type="text"
             />
-            {formik.errors.name && (
+            {formik.errors.name && formik.touched.name && (
               <p className="font-fontInter text-red-500 text-sm mb-5">
                 {formik.errors.name}
               </p>
@@ -42,7 +42,7 @@ const RegistrationFormComponent = () => {
               onChange={formik.handleChange}
               type="email"
             />
-            {formik.errors.email && (
+            {formik.errors.email && formik.touched.email && (
               <p className="font-fontInter text-red-500 text-sm mb-5">
                 {formik.errors.email}
               </p>
@@ -59,7 +59,7 @@ const RegistrationFormComponent = () => {
               onChange={formik.handleChange}
               type="password"
             />
-            {formik.errors.password && (
+            {formik.errors.password && formik.touched.password && (
               <p className="font-fontInter text-red-500 text-sm mb-5">
                 {formik.errors.password}
               </p>
@@ -76,11 +76,12 @@ const RegistrationFormComponent = () => {
               onChange={formik.handleChange}
               type="password"
             />
-            {formik.errors.confirmPassword && (
-              <p className="font-fontInter text-red-500 text-sm mb-5">
-                {formik.errors.confirmPassword}
-              </p>
-            )}
+            {formik.errors.confirmPassword &&
+              formik.touched.confirmPassword && (
+                <p className="font-fontInter text-red-500 text-sm mb-5">
+                  {formik.errors.confirmPassword}
+                </p>
+              )}
           </div>
           <button className="bg-black text-white w-full font-fontInter text-base border rounded-md py-2 mt-1 mb-4">
             Sign Up
