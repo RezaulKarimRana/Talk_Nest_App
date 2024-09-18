@@ -4,7 +4,7 @@ import { UserAddIcon } from "../../svg/UserAddIcon";
 const UserLists = () => {
   return (
     <>
-      <div className="shadow-md rounded-md bg-white p-3 h-[92vh] overflow-y-auto scrollbar-thin">
+      <div className="shadow-md rounded-md bg-white p-3 h-[95vh] overflow-y-auto scrollbar-thin">
         <h1 className="font-fontInterBold text-lg text-[#494949] mb-5">
           All Users
         </h1>

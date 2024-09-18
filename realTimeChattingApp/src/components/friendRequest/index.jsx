@@ -3,7 +3,7 @@ import friendImage from "../../assets/Friend.png";
 const FriendRequest = () => {
   return (
     <>
-      <div className="shadow-md rounded-md bg-white p-3 h-[92vh] overflow-y-auto scrollbar-thin">
+      <div className="shadow-md rounded-md bg-white p-3 h-[95vh] overflow-y-auto scrollbar-thin">
         <h1 className="font-fontInterBold text-[#494949] text-xl mb-5">
           Friend requests
         </h1>
