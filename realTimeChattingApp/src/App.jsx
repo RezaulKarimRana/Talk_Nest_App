@@ -9,7 +9,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Messages from "./pages/Messages";
 import RootLayout from "./components/rootLayout";
-
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(

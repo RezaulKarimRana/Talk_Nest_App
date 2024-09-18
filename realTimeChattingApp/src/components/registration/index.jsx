@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import { registration } from "../../validation/Validation";
-const RegistrationFormComponent = () => {
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
+import CircleLoader from "react-spinners/CircleLoader";
+const RegistrationFormComponent = ({ toast }) => {
+  const [loading, setLoading] = useState(false);
+  const auth = getAuth();
   const initialValues = {
     name: "",
     email: "",
@@ -11,9 +19,67 @@ const RegistrationFormComponent = () => {
   };
   const formik = useFormik({
     initialValues: initialValues,
-    onSubmit: console.log("sdf"),
+    onSubmit: () => {
+      createNewUser();
+    },
     validationSchema: registration,
   });
+  const createNewUser = () => {
+    setLoading(true);
+    createUserWithEmailAndPassword(
+      auth,
+      formik.values.email,
+      formik.values.password
+    )
+      .then((userCredential) => {
+        const user = userCredential.user;
+        setLoading(false);
+        sendEmailVerification(auth.currentUser)
+          .then(() => {
+            toast.success("Please check email for complete registration", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+            setLoading(false);
+          })
+          .catch((error) => {
+            toast.error(error.message, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+            setLoading(false);
+          });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        if (errorMessage.includes("auth/email-already-in-use")) {
+          toast.error("Email already in use", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+        setLoading(false);
+      });
+  };
   return (
     <>
       <div>
@@ -83,8 +149,11 @@ const RegistrationFormComponent = () => {
                 </p>
               )}
           </div>
-          <button className="bg-black text-white w-full font-fontInter text-base border rounded-md py-2 mt-1 mb-4">
-            Sign Up
+          <button
+            disabled={loading}
+            className="bg-black text-white w-full font-fontInter text-base border rounded-md py-2 mt-1 mb-4"
+          >
+            {loading ? <CircleLoader color="#fff" size={20} /> : "Sign Up"}
           </button>
           <p className="font-fontInter text-sm">
             Already have an account please{" "}
