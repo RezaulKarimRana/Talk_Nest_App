@@ -12,6 +12,7 @@ import RootLayout from "./components/rootLayout";
 import "react-toastify/dist/ReactToastify.css";
 import NotLoggedInUserRoute from "./privateRoute/NotLoggedInUserRoute";
 import LoggedInUserRoute from "./privateRoute/LoggedInUserRoute";
+import "cropperjs/dist/cropper.css";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
