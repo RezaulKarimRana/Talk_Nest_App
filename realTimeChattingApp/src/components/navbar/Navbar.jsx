@@ -8,6 +8,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { LoggedOutUser } from "../../features/slices/loginSlice";
+import { createPortal } from "react-dom";
+import Modals from "../modals";
 
 const Navbar = () => {
   const user = useSelector((user) => user.login.isLoggedIn);
@@ -34,7 +36,10 @@ const Navbar = () => {
           <div className="w-24 h-24 rounded-full overflow-hidden">
             <img src={natureImage} />
           </div>
-          <div className="text-white w-4 h-4 items-center justify-center absolute mt-9 mr-2 cursor-pointer">
+          <div
+            className="text-white w-4 h-4 items-center justify-center absolute mt-9 mr-2 cursor-pointer"
+            onClick={() => setShow(true)}
+          >
             <DirectBoxSendIcon />
           </div>
           <div className="text-center">
@@ -90,6 +95,7 @@ const Navbar = () => {
             </label>
           </div>
         </div>
+        {show && createPortal(<Modals setShow={setShow} />, document.body)}
       </div>
     </>
   );
