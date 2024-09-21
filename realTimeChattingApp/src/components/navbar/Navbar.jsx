@@ -34,17 +34,17 @@ const Navbar = () => {
       <div className="h-full w-1/12 flex flex-col justify-between py-3">
         <div className="flex flex-col items-center gap-y-2 relative">
           <div className="w-24 h-24 rounded-full overflow-hidden">
-            <img src={natureImage} />
+            <img src={user.photoURL || natureImage} />
           </div>
           <div
             className="text-white w-4 h-4 items-center justify-center absolute mt-9 mr-2 cursor-pointer"
             onClick={() => setShow(true)}
           >
-            <DirectBoxSendIcon />
+            {!user?.photoURL && <DirectBoxSendIcon />}
           </div>
           <div className="text-center">
             <span className="font-fontInter text-white text-sm">
-              Md. Rezaul Karim
+              {user.displayName}
             </span>
           </div>
         </div>

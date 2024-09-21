@@ -12,7 +12,7 @@ import { getAuth, updateProfile } from "firebase/auth";
 import { LoggedInUser } from "../../features/slices/loginSlice";
 import ImageCropper from "../imageCropper";
 const Modals = ({ setShow }) => {
-  const user = useSelector((user) => user.login.loggedIn);
+  const user = useSelector((user) => user.login.isLoggedIn);
   const storage = getStorage();
   const auth = getAuth();
   const storageRef = ref(storage, user);

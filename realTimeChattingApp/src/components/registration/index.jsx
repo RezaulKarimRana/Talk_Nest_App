@@ -6,10 +6,13 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  updateProfile,
 } from "firebase/auth";
+import { getDatabase, ref, set } from "firebase/database";
 import CircleLoader from "react-spinners/CircleLoader";
 const RegistrationFormComponent = ({ toast }) => {
   const [loading, setLoading] = useState(false);
+  const db = getDatabase();
   const auth = getAuth();
   const initialValues = {
     name: "",
@@ -34,6 +37,9 @@ const RegistrationFormComponent = ({ toast }) => {
       .then((userCredential) => {
         const user = userCredential.user;
         setLoading(false);
+        updateProfile(auth.currentUser, {
+          displayName: formik.values.name,
+        });
         sendEmailVerification(auth.currentUser)
           .then(() => {
             toast.success("Please check email for complete registration", {
@@ -61,6 +67,12 @@ const RegistrationFormComponent = ({ toast }) => {
             });
             setLoading(false);
           });
+      })
+      .then(() => {
+        set(ref(db, "users/" + user.uid), {
+          username: user.displayName,
+          email: user.email,
+        });
       })
       .catch((error) => {
         const errorCode = error.code;
