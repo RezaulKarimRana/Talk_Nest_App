@@ -40,7 +40,7 @@ const Navbar = () => {
             className="text-white w-4 h-4 items-center justify-center absolute mt-9 mr-2 cursor-pointer"
             onClick={() => setShow(true)}
           >
-            {!user?.photoURL && <DirectBoxSendIcon />}
+            <DirectBoxSendIcon />
           </div>
           <div className="text-center">
             <span className="font-fontInter text-white text-sm">

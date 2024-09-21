@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { registration } from "../../validation/Validation";
 import {
@@ -14,6 +14,7 @@ const RegistrationFormComponent = ({ toast }) => {
   const [loading, setLoading] = useState(false);
   const db = getDatabase();
   const auth = getAuth();
+  const navigate = useNavigate();
   const initialValues = {
     name: "",
     email: "",
@@ -39,39 +40,45 @@ const RegistrationFormComponent = ({ toast }) => {
         setLoading(false);
         updateProfile(auth.currentUser, {
           displayName: formik.values.name,
-        });
-        sendEmailVerification(auth.currentUser)
-          .then(() => {
-            toast.success("Please check email for complete registration", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
+        }).then(() => {
+          sendEmailVerification(auth.currentUser)
+            .then(() => {
+              set(ref(db, "users/" + user.uid), {
+                username: user.displayName,
+                email: user.email,
+              });
+            })
+            .then(() => {
+              toast.success("Please check email for complete registration", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+              let redirect;
+              clearTimeout(redirect);
+              redirect = setTimeout(() => {
+                navigate("/login");
+              }, 2000);
+              setLoading(false);
+            })
+            .catch((error) => {
+              toast.error(error.message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+              setLoading(false);
             });
-            setLoading(false);
-          })
-          .catch((error) => {
-            toast.error(error.message, {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-            setLoading(false);
-          });
-      })
-      .then(() => {
-        set(ref(db, "users/" + user.uid), {
-          username: user.displayName,
-          email: user.email,
         });
       })
       .catch((error) => {
