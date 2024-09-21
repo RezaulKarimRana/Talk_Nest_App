@@ -1,13 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { HouseIcon } from "../../svg/HouseIcon";
 import { MessageTextIcon } from "../../svg/MessageTextIcon";
 import { BackSquareIcon } from "../../svg/BackSquareIcon";
 import { DirectBoxSendIcon } from "../../svg/DirectBoxSendIcon";
 import natureImage from "../../assets/nature.png";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { getAuth, signOut } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { LoggedOutUser } from "../../features/slices/loginSlice";
 
 const Navbar = () => {
+  const user = useSelector((user) => user.login.isLoggedIn);
+  const [show, setShow] = useState(false);
   const location = useLocation();
+  const auth = getAuth();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        navigate("/login");
+        localStorage.removeItem("user");
+        dispatch(LoggedOutUser());
+      })
+      .catch((error) => {
+        // An error happened.
+      });
+  };
   return (
     <>
       <div className="h-full w-1/12 flex flex-col justify-between py-3">
@@ -58,7 +77,10 @@ const Navbar = () => {
             )}
           </div>
         </div>
-        <div className="flex items-center justify-center cursor-pointer">
+        <div
+          className="flex items-center justify-center cursor-pointer"
+          onClick={handleLogout}
+        >
           <div className="text-white flex w-[14px] h-[14px] items-center justify-center">
             <BackSquareIcon />
           </div>

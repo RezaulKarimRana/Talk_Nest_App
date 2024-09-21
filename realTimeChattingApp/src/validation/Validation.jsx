@@ -23,3 +23,8 @@ export const registration = Yup.object({
     )
     .required("Confirm password is required"),
 });
+
+export const login = Yup.object({
+  email: Yup.string().email().required("Email is required"),
+  password: Yup.string().min(5).required("Password is required"),
+});
