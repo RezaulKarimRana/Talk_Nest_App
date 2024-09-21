@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { CrossIcon } from "../../svg/Cross";
 import { UploadIcon } from "../../svg/Upload";
-import ImageCropper from "../ImageCropper";
 import {
   getDownloadURL,
   getStorage,
@@ -11,6 +10,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getAuth, updateProfile } from "firebase/auth";
 import { LoggedInUser } from "../../features/slices/loginSlice";
+import ImageCropper from "../imageCropper";
 const Modals = ({ setShow }) => {
   const user = useSelector((user) => user.login.loggedIn);
   const storage = getStorage();
