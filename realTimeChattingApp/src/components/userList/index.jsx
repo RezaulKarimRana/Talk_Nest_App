@@ -1,7 +1,85 @@
-import React from "react";
-import catImage from "../../assets/CatIcon.png";
+import React, { useEffect, useState } from "react";
+import manImage from "../../assets/man_avatar.png";
 import { UserAddIcon } from "../../svg/UserAddIcon";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set,
+  push,
+  remove,
+} from "firebase/database";
+import { useSelector } from "react-redux";
+import { getDownloadURL, getStorage, ref as Ref } from "firebase/storage";
 const UserLists = () => {
+  const user = useSelector((user) => user.login.isLoggedIn);
+  const db = getDatabase();
+  const storage = getStorage();
+  const [users, setUsers] = useState([]);
+  const [friendReqList, setFriendReqList] = useState([]);
+  const [cancelReq, setCancelReq] = useState([]);
+  useEffect(() => {
+    const starCountRef = ref(db, "users/");
+    onValue(starCountRef, (snapshot) => {
+      const users = [];
+      snapshot.forEach((userList) => {
+        if (user.uid !== userList.key) {
+          getDownloadURL(Ref(storage, userList.key))
+            .then((downloadURL) => {
+              users.push({
+                ...userList.val(),
+                id: userList.key,
+                photoURL: downloadURL,
+              });
+            })
+            .catch((error) => {
+              users.push({
+                ...userList.val(),
+                id: userList.key,
+                photoURL: null,
+              });
+            })
+            .then(() => {
+              setUsers([...users]);
+            });
+        }
+      });
+      // const data = snapshot.val();
+      // updateStarCount(postElement, data);
+    });
+  }, [db, user.uid, storage]);
+  const handleFriendRequest = (data) => {
+    set(push(ref(db, "friendRequest")), {
+      senderName: user.displayName,
+      senderId: user.uid,
+      senderProfile: user.photoURL ?? "/src/assets/man_avatar.png",
+      receiverName: data.username,
+      reveiverId: data.id,
+      receiverProfile: data.photoURL ?? "/src/assets/man_avatar.png",
+    });
+  };
+  //show friend request
+  useEffect(() => {
+    const starCountRef = ref(db, "friendRequest/");
+    onValue(starCountRef, (snapshot) => {
+      let reqArr = [];
+      let cancelReq = [];
+      snapshot.forEach((item) => {
+        reqArr.push(item.val().reveiverId + "" + item.val().senderId);
+        cancelReq.push({ ...item.val(), id: item.key });
+      });
+      setFriendReqList(reqArr);
+      setCancelReq(cancelReq);
+    });
+  }, [db]);
+  const handleCancelReq = (itemId) => {
+    const reqToCancel = cancelReq.find(
+      (req) => req.receiverId == itemId && req.senderId == user.uid
+    );
+    if (reqToCancel) {
+      remove(ref(db, "friendRequest/" + reqToCancel.id));
+    }
+  };
   return (
     <>
       <div className="shadow-md rounded-md bg-white p-3 h-[95vh] overflow-y-auto scrollbar-thin">
@@ -14,231 +92,37 @@ const UserLists = () => {
             placeholder="Search Users..."
           />
         </div>
-        <div className="flex items-center justify-between gap-x-2 mt-3">
-          <div className="flex items-center justify-between">
-            <div className="w-15 h-15 rounded-full overflow-hidden">
-              <img src={catImage} />
+        {users.map((item, i) => (
+          <div className="flex items-center justify-between mt-5" key={i}>
+            <div className="flex items-center gap-x-2">
+              <div className="w-14 h-14 rounded-full overflow-hidden">
+                <img
+                  src={item.photoURL || manImage}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="font-fontRegular text-black text-lg">
+                {item.username}
+              </h3>
             </div>
-            <div className="text-center">
-              <span className="font-fontInter text-[#3D3C3C] text-lg ml-4">
-                Md. Rezaul Karim
-              </span>
-            </div>
+            {friendReqList.includes(item.id + "" + user.uid) ||
+            friendReqList.includes(user.uid + "" + item.id) ? (
+              <button
+                className="bg-red-500 px-4 py-2 rounded-md text-white font-fontRegular"
+                onClick={() => handleCancelReq(item.id)}
+              >
+                Cancel Request
+              </button>
+            ) : (
+              <div
+                className="text-black cursor-pointer"
+                onClick={() => handleFriendRequest(item)}
+              >
+                <UserAddIcon />
+              </div>
+            )}
           </div>
-          <div className="cursor-pointer text-[#292D32]">
-            <UserAddIcon />
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-x-2 mt-3">
-          <div className="flex items-center justify-between">
-            <div className="w-15 h-15 rounded-full overflow-hidden">
-              <img src={catImage} />
-            </div>
-            <div className="text-center">
-              <span className="font-fontInter text-[#3D3C3C] text-lg ml-4">
-                Md. Rezaul Karim
-              </span>
-            </div>
-          </div>
-          <div className="cursor-pointer text-[#292D32]">
-            <UserAddIcon />
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-x-2 mt-3">
-          <div className="flex items-center justify-between">
-            <div className="w-15 h-15 rounded-full overflow-hidden">
-              <img src={catImage} />
-            </div>
-            <div className="text-center">
-              <span className="font-fontInter text-[#3D3C3C] text-lg ml-4">
-                Md. Rezaul Karim
-              </span>
-            </div>
-          </div>
-          <div className="cursor-pointer text-[#292D32]">
-            <UserAddIcon />
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-x-2 mt-3">
-          <div className="flex items-center justify-between">
-            <div className="w-15 h-15 rounded-full overflow-hidden">
-              <img src={catImage} />
-            </div>
-            <div className="text-center">
-              <span className="font-fontInter text-[#3D3C3C] text-lg ml-4">
-                Md. Rezaul Karim
-              </span>
-            </div>
-          </div>
-          <div className="cursor-pointer text-[#292D32]">
-            <UserAddIcon />
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-x-2 mt-3">
-          <div className="flex items-center justify-between">
-            <div className="w-15 h-15 rounded-full overflow-hidden">
-              <img src={catImage} />
-            </div>
-            <div className="text-center">
-              <span className="font-fontInter text-[#3D3C3C] text-lg ml-4">
-                Md. Rezaul Karim
-              </span>
-            </div>
-          </div>
-          <div className="cursor-pointer text-[#292D32]">
-            <UserAddIcon />
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-x-2 mt-3">
-          <div className="flex items-center justify-between">
-            <div className="w-15 h-15 rounded-full overflow-hidden">
-              <img src={catImage} />
-            </div>
-            <div className="text-center">
-              <span className="font-fontInter text-[#3D3C3C] text-lg ml-4">
-                Md. Rezaul Karim
-              </span>
-            </div>
-          </div>
-          <div className="cursor-pointer text-[#292D32]">
-            <UserAddIcon />
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-x-2 mt-3">
-          <div className="flex items-center justify-between">
-            <div className="w-15 h-15 rounded-full overflow-hidden">
-              <img src={catImage} />
-            </div>
-            <div className="text-center">
-              <span className="font-fontInter text-[#3D3C3C] text-lg ml-4">
-                Md. Rezaul Karim
-              </span>
-            </div>
-          </div>
-          <div className="cursor-pointer text-[#292D32]">
-            <UserAddIcon />
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-x-2 mt-3">
-          <div className="flex items-center justify-between">
-            <div className="w-15 h-15 rounded-full overflow-hidden">
-              <img src={catImage} />
-            </div>
-            <div className="text-center">
-              <span className="font-fontInter text-[#3D3C3C] text-lg ml-4">
-                Md. Rezaul Karim
-              </span>
-            </div>
-          </div>
-          <div className="cursor-pointer text-[#292D32]">
-            <UserAddIcon />
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-x-2 mt-3">
-          <div className="flex items-center justify-between">
-            <div className="w-15 h-15 rounded-full overflow-hidden">
-              <img src={catImage} />
-            </div>
-            <div className="text-center">
-              <span className="font-fontInter text-[#3D3C3C] text-lg ml-4">
-                Md. Rezaul Karim
-              </span>
-            </div>
-          </div>
-          <div className="cursor-pointer text-[#292D32]">
-            <UserAddIcon />
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-x-2 mt-3">
-          <div className="flex items-center justify-between">
-            <div className="w-15 h-15 rounded-full overflow-hidden">
-              <img src={catImage} />
-            </div>
-            <div className="text-center">
-              <span className="font-fontInter text-[#3D3C3C] text-lg ml-4">
-                Md. Rezaul Karim
-              </span>
-            </div>
-          </div>
-          <div className="cursor-pointer text-[#292D32]">
-            <UserAddIcon />
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-x-2 mt-3">
-          <div className="flex items-center justify-between">
-            <div className="w-15 h-15 rounded-full overflow-hidden">
-              <img src={catImage} />
-            </div>
-            <div className="text-center">
-              <span className="font-fontInter text-[#3D3C3C] text-lg ml-4">
-                Md. Rezaul Karim
-              </span>
-            </div>
-          </div>
-          <div className="cursor-pointer text-[#292D32]">
-            <UserAddIcon />
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-x-2 mt-3">
-          <div className="flex items-center justify-between">
-            <div className="w-15 h-15 rounded-full overflow-hidden">
-              <img src={catImage} />
-            </div>
-            <div className="text-center">
-              <span className="font-fontInter text-[#3D3C3C] text-lg ml-4">
-                Md. Rezaul Karim
-              </span>
-            </div>
-          </div>
-          <div className="cursor-pointer text-[#292D32]">
-            <UserAddIcon />
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-x-2 mt-3">
-          <div className="flex items-center justify-between">
-            <div className="w-15 h-15 rounded-full overflow-hidden">
-              <img src={catImage} />
-            </div>
-            <div className="text-center">
-              <span className="font-fontInter text-[#3D3C3C] text-lg ml-4">
-                Md. Rezaul Karim
-              </span>
-            </div>
-          </div>
-          <div className="cursor-pointer text-[#292D32]">
-            <UserAddIcon />
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-x-2 mt-3">
-          <div className="flex items-center justify-between">
-            <div className="w-15 h-15 rounded-full overflow-hidden">
-              <img src={catImage} />
-            </div>
-            <div className="text-center">
-              <span className="font-fontInter text-[#3D3C3C] text-lg ml-4">
-                Md. Rezaul Karim
-              </span>
-            </div>
-          </div>
-          <div className="cursor-pointer text-[#292D32]">
-            <UserAddIcon />
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-x-2 mt-3">
-          <div className="flex items-center justify-between">
-            <div className="w-15 h-15 rounded-full overflow-hidden">
-              <img src={catImage} />
-            </div>
-            <div className="text-center">
-              <span className="font-fontInter text-[#3D3C3C] text-lg ml-4">
-                Md. Rezaul Karim
-              </span>
-            </div>
-          </div>
-          <div className="cursor-pointer text-[#292D32]">
-            <UserAddIcon />
-          </div>
-        </div>
+        ))}
       </div>
     </>
   );
