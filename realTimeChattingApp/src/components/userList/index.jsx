@@ -57,8 +57,6 @@ const UserLists = () => {
             });
         }
       });
-      // const data = snapshot.val();
-      // updateStarCount(postElement, data);
     });
   }, [db, user.uid, storage]);
   //send friend Request
