@@ -3,15 +3,24 @@ import { MicrophoneIcon } from "../../svg/MicrophoneIcon";
 import { SmileIcon } from "../../svg/SmileIcon";
 import { GalleryIcon } from "../../svg/GalleryIcon";
 import avatarImage from "../../assets/man_avatar.png";
+import { useSelector } from "react-redux";
 const Chatting = () => {
+  const singleFriend = useSelector((single) => single.active.active);
   return (
     <>
       <div className="w-full h-[95vh] bg-white shadow-md">
         <div className="py-4 h-[10vh] bg-[#F9F9F9] px-6 rounded-md">
           <div className="flex items-center gap-x-2">
-            <div className="w-10 h-10 rounded-full bg-[#D9D9D9] overflow-hidden"></div>
+            <div className="w-10 h-10 rounded-full bg-[#D9D9D9] overflow-hidden">
+              <img
+                src={singleFriend.profile || avatarImage}
+                className="w-full h-full object-cover"
+              />
+            </div>
             <div>
-              <span className="font-fontInter">Md. Rezaul Karim</span>
+              <span className="font-fontInter">
+                {singleFriend.name || "Please select user for chatting"}
+              </span>
             </div>
           </div>
         </div>
