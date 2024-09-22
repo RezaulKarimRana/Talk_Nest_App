@@ -118,7 +118,10 @@ const UserLists = () => {
           />
         </div>
         {users.map((item, i) => (
-          <div className="flex items-center justify-between mt-5" key={i}>
+          <div
+            className="flex items-center justify-between mt-3 hover:bg-[#efefef] px-2 py-2 cursor-pointer transition-all ease-linear duration-100 rounded-md"
+            key={i}
+          >
             <div className="flex items-center gap-x-2">
               <div className="w-14 h-14 rounded-full overflow-hidden">
                 <img

@@ -42,7 +42,10 @@ const FriendRequest = () => {
           Friend requests
         </h1>
         {friendReqList?.map((item, key) => (
-          <div className="flex items-center justify-between mt-3" key={key}>
+          <div
+            className="flex items-center justify-between mt-3 hover:bg-[#efefef] px-2 py-2 cursor-pointer transition-all ease-linear duration-100 rounded-md"
+            key={key}
+          >
             <div className="flex items-center gap-x-2">
               <div className="w-14 h-14 rounded-full overflow-hidden">
                 <img src={item.senderProfile || avatarImage} />

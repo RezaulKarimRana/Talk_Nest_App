@@ -1,11 +1,13 @@
 import { getDatabase, onValue, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import avatarImage from "../../assets/man_avatar.png";
+import { ActiveSingle } from "../../features/slices/activeSingleSlice";
 const Friends = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [friends, setFriends] = useState([]);
   const user = useSelector((user) => user.login.isLoggedIn);
   const db = getDatabase();
@@ -24,6 +26,45 @@ const Friends = () => {
       setFriends(frndArr);
     });
   }, [db, user.uid]);
+  const handleSingleChat = (data) => {
+    if (user.uid == data.receiverId) {
+      dispatch(
+        ActiveSingle({
+          status: "single",
+          id: data.senderId,
+          name: data.senderName,
+          profile: data.senderProfile,
+        })
+      );
+      localStorage.setItem(
+        "active",
+        JSON.stringify({
+          status: "single",
+          id: data.senderId,
+          name: data.senderName,
+          profile: data.senderProfile,
+        })
+      );
+    } else {
+      dispatch(
+        ActiveSingle({
+          status: "single",
+          id: data.receiverId,
+          name: data.receiverName,
+          profile: data.receiverProfile,
+        })
+      );
+      localStorage.setItem(
+        "active",
+        JSON.stringify({
+          status: "single",
+          id: data.receiverId,
+          name: data.receiverName,
+          profile: data.receiverProfile,
+        })
+      );
+    }
+  };
   return (
     <>
       <div className="shadow-md rounded-md bg-white p-3 h-[95vh] overflow-y-auto scrollbar-thin">
@@ -31,7 +72,11 @@ const Friends = () => {
           My Friends
         </h1>
         {friends?.map((item, key) => (
-          <div className="flex items-center justify-between mt-3" key={key}>
+          <div
+            className="flex items-center justify-between mt-3 hover:bg-[#efefef] px-2 py-2 cursor-pointer transition-all ease-linear duration-100 rounded-md"
+            key={key}
+            onClick={() => handleSingleChat(item)}
+          >
             <div className="flex items-center gap-x-2">
               <div className="w-14 h-14 rounded-full overflow-hidden">
                 {user.uid == item.senderId ? (
