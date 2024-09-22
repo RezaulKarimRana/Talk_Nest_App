@@ -48,7 +48,7 @@ const UserLists = () => {
               searchUsers.push({
                 ...userList.val(),
                 id: userList.key,
-                photoURL: downloadURL,
+                photoURL: null,
               });
             })
             .then(() => {
@@ -61,13 +61,14 @@ const UserLists = () => {
       // updateStarCount(postElement, data);
     });
   }, [db, user.uid, storage]);
+  //send friend Request
   const handleFriendRequest = (data) => {
     set(push(ref(db, "friendRequest")), {
       senderName: user.displayName,
       senderId: user.uid,
       senderProfile: user.photoURL ?? "/src/assets/man_avatar.png",
       receiverName: data.username,
-      reveiverId: data.id,
+      receiverId: data.id,
       receiverProfile: data.photoURL ?? "/src/assets/man_avatar.png",
     });
   };
@@ -78,7 +79,7 @@ const UserLists = () => {
       let reqArr = [];
       let cancelReq = [];
       snapshot.forEach((item) => {
-        reqArr.push(item.val().reveiverId + "" + item.val().senderId);
+        reqArr.push(item.val().receiverId + "" + item.val().senderId);
         cancelReq.push({ ...item.val(), id: item.key });
       });
       setFriendReqList(reqArr);
@@ -134,10 +135,10 @@ const UserLists = () => {
             {friendReqList.includes(item.id + "" + user.uid) ||
             friendReqList.includes(user.uid + "" + item.id) ? (
               <button
-                className="bg-red-500 px-4 py-2 rounded-md text-white font-fontRegular"
+                className="px-3 py-1 font-fontInter bg-[#D34A4A] text-white rounded-md"
                 onClick={() => handleCancelReq(item.id)}
               >
-                Cancel Request
+                Cancel
               </button>
             ) : (
               <div
