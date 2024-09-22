@@ -12,10 +12,12 @@ import {
 import { useSelector } from "react-redux";
 import { getDownloadURL, getStorage, ref as Ref } from "firebase/storage";
 const UserLists = () => {
+  const [search, setSearch] = useState("");
   const user = useSelector((user) => user.login.isLoggedIn);
   const db = getDatabase();
   const storage = getStorage();
   const [users, setUsers] = useState([]);
+  const [searchUsers, setsearchUsers] = useState([]);
   const [friendReqList, setFriendReqList] = useState([]);
   const [cancelReq, setCancelReq] = useState([]);
   useEffect(() => {
@@ -31,6 +33,11 @@ const UserLists = () => {
                 id: userList.key,
                 photoURL: downloadURL,
               });
+              searchUsers.push({
+                ...userList.val(),
+                id: userList.key,
+                photoURL: downloadURL,
+              });
             })
             .catch((error) => {
               users.push({
@@ -38,9 +45,15 @@ const UserLists = () => {
                 id: userList.key,
                 photoURL: null,
               });
+              searchUsers.push({
+                ...userList.val(),
+                id: userList.key,
+                photoURL: downloadURL,
+              });
             })
             .then(() => {
               setUsers([...users]);
+              setsearchUsers([...searchUsers]);
             });
         }
       });
@@ -80,6 +93,17 @@ const UserLists = () => {
       remove(ref(db, "friendRequest/" + reqToCancel.id));
     }
   };
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+    if (e.target.value.length > 0) {
+      var data = searchUsers.filter(
+        (x) => x.username.toLowerCase() == e.target.value.toLowerCase()
+      );
+      setUsers(data);
+    } else {
+      setUsers(searchUsers);
+    }
+  };
   return (
     <>
       <div className="shadow-md rounded-md bg-white p-3 h-[95vh] overflow-y-auto scrollbar-thin">
@@ -90,6 +114,8 @@ const UserLists = () => {
           <input
             className="w-full h-12 bg-[#F8F8F8] rounded-md placeholder:font-fontInter placeholder:text-lg pl-5 focus:outline-none"
             placeholder="Search Users..."
+            value={search}
+            onChange={(e) => handleSearch(e)}
           />
         </div>
         {users.map((item, i) => (
