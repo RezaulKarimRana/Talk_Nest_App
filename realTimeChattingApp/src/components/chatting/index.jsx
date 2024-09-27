@@ -23,6 +23,7 @@ const Chatting = () => {
   const db = getDatabase();
   const storage = getStorage();
   const chooseFile = useRef(null);
+  const scrollRef = useRef(null);
   const handleSendMessage = () => {
     if (singleFriend?.status == "single" && messages.length > 0) {
       set(push(ref(db, "singleMessage")), {
@@ -98,6 +99,14 @@ const Chatting = () => {
       }
     );
   };
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [messages]);
+  const handleSendButton = (e) => {
+    if (e.key == "Enter") handleSendMessage();
+  };
   return (
     <>
       <div className="w-full h-[95vh] bg-white shadow-md">
@@ -119,7 +128,7 @@ const Chatting = () => {
         <div className="h-[70vh] bg-[#FBFBFB] px-5 py-3 overflow-y-auto scrollbar-thin">
           {singleFriend?.status == "single"
             ? allMessages?.map((item, i) => (
-                <div key={i}>
+                <div key={i} ref={scrollRef}>
                   {item.whoSendId == user.uid ? (
                     item.image ? (
                       <div className="w-[30%] ml-auto overflow-hidden">
@@ -201,6 +210,7 @@ const Chatting = () => {
               className="w-[60%] outline-none bg-[#F5F5F5]"
               onChange={(e) => setMessages(e.target.value)}
               value={messages}
+              onKeyUp={handleSendButton}
             />
             <button
               className="bg-[#3E8DEB] px-4 py-2 rounded-md font-fontInter text-sm text-white"
