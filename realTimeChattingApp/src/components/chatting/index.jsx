@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { getDatabase, set, ref, push, onValue } from "firebase/database";
 import { formatDistance } from "date-fns";
 import EmojiPicker from "emoji-picker-react";
+import { ToastContainer, toast } from "react-toastify";
 import {
   getStorage,
   ref as Ref,
@@ -63,6 +64,19 @@ const Chatting = () => {
   };
   const handleImageUpload = (e) => {
     const imgFile = e.target.files[0];
+    if (imgFile.size > 3 * 1024 * 1024) {
+      toast.error("Image must be less than 3 MB", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
     const storageRef = Ref(
       storage,
       `${user.username} = sendImageMessage/${imgFile}`
@@ -109,6 +123,7 @@ const Chatting = () => {
   };
   return (
     <>
+      <ToastContainer />
       <div className="w-full h-[95vh] bg-white shadow-md">
         <div className="py-4 h-[10vh] bg-[#F9F9F9] px-6 rounded-md">
           <div className="flex items-center gap-x-2">
