@@ -8,6 +8,7 @@ import { getDatabase, set, ref, push, onValue } from "firebase/database";
 import { formatDistance } from "date-fns";
 import EmojiPicker from "emoji-picker-react";
 import { ToastContainer, toast } from "react-toastify";
+import CircleLoader from "react-spinners/CircleLoader";
 import {
   getStorage,
   ref as Ref,
@@ -16,9 +17,12 @@ import {
 } from "firebase/storage";
 
 const Chatting = () => {
+  const [loading, setLoading] = useState(false);
   const singleFriend = useSelector((single) => single?.active.active);
   const user = useSelector((user) => user.login.isLoggedIn);
   const [messages, setMessages] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const [emojiShow, setEmojiShow] = useState(false);
   const [allMessages, setAllMessages] = useState([]);
   const db = getDatabase();
@@ -26,7 +30,9 @@ const Chatting = () => {
   const chooseFile = useRef(null);
   const scrollRef = useRef(null);
   const handleSendMessage = () => {
+    if (loading) return;
     if (singleFriend?.status == "single" && messages.length > 0) {
+      setLoading(true);
       set(push(ref(db, "singleMessage")), {
         whoSendName: user.displayName,
         whoSendId: user.uid,
@@ -39,7 +45,51 @@ const Chatting = () => {
       }).then(() => {
         setMessages("");
         setEmojiShow(false);
+        setSelectedImage(null);
+        setImageFile(null);
+        setLoading(false);
       });
+    } else if (singleFriend?.status == "single" && imageFile != null) {
+      setLoading(true);
+      const storageRef = Ref(
+        storage,
+        `${user.username} = sendImageMessage/${imageFile}`
+      );
+      const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+        },
+        (error) => {
+          console.log(error);
+          setLoading(false);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            set(push(ref(db, "singleMessage")), {
+              whoSendName: user.displayName,
+              whoSendId: user.uid,
+              whoReceiveName: singleFriend?.name,
+              whoReceiveId: singleFriend?.id,
+              messages: messages,
+              image: downloadURL,
+              date: `${new Date().getFullYear()}-${
+                new Date().getMonth() + 1
+              }-${new Date().getDate()}-${new Date().getHours()}:${new Date().getMinutes()}`,
+            }).then(() => {
+              setMessages("");
+              setEmojiShow(false);
+              setSelectedImage(null);
+              setImageFile(null);
+              setLoading(false);
+            });
+          });
+        }
+      );
     }
   };
   //get messages
@@ -77,41 +127,8 @@ const Chatting = () => {
       });
       return;
     }
-    const storageRef = Ref(
-      storage,
-      `${user.username} = sendImageMessage/${imgFile}`
-    );
-    const uploadTask = uploadBytesResumable(storageRef, imgFile);
-
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          set(push(ref(db, "singleMessage")), {
-            whoSendName: user.displayName,
-            whoSendId: user.uid,
-            whoReceiveName: singleFriend?.name,
-            whoReceiveId: singleFriend?.id,
-            messages: messages,
-            image: downloadURL,
-            date: `${new Date().getFullYear()}-${
-              new Date().getMonth() + 1
-            }-${new Date().getDate()}-${new Date().getHours()}:${new Date().getMinutes()}`,
-          }).then(() => {
-            setMessages("");
-            setEmojiShow(false);
-          });
-        });
-      }
-    );
+    setSelectedImage(URL.createObjectURL(imgFile));
+    setImageFile(imgFile);
   };
   useEffect(() => {
     scrollRef.current?.scrollIntoView({
@@ -119,6 +136,7 @@ const Chatting = () => {
     });
   }, [messages]);
   const handleSendButton = (e) => {
+    if (loading) return;
     if (e.key == "Enter") handleSendMessage();
   };
   return (
@@ -231,11 +249,14 @@ const Chatting = () => {
                 value={messages}
                 onKeyUp={handleSendButton}
               />
+              {selectedImage && (
+                <img className="w-12 h-12" src={selectedImage} />
+              )}
               <button
                 className="bg-[#3E8DEB] px-4 py-2 rounded-md font-fontInter text-sm text-white"
                 onClick={handleSendMessage}
               >
-                Send
+                {loading ? <CircleLoader color="#fff" size={20} /> : "Send"}
               </button>
             </div>
           </div>
