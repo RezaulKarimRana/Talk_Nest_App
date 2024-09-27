@@ -202,6 +202,7 @@ const Chatting = () => {
                 ref={chooseFile}
                 hidden
                 type="file"
+                accept="image/jpg,image/png,image/jpeg,image/avif"
                 onChange={handleImageUpload}
               />
             </div>
