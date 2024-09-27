@@ -1,8 +1,8 @@
 import React from "react";
 import { CrossIcon } from "../../svg/Cross";
 import { Cropper } from "react-cropper";
-
-const ImageCropper = ({ setImage, cropperRef, image, getCropData }) => {
+import CircleLoader from "react-spinners/CircleLoader";
+const ImageCropper = ({ setImage, cropperRef, image, loader, getCropData }) => {
   return (
     <>
       <div className="fixed top-0 left-0 w-full h-screen flex  items-center justify-center">
@@ -46,7 +46,7 @@ const ImageCropper = ({ setImage, cropperRef, image, getCropData }) => {
             className="bg-[#6CD0FB] text-white font-fontBold w-full py-2 rounded-md mt-3"
             onClick={getCropData}
           >
-            Upload
+            {loader ? <CircleLoader color="#fff" size={20} /> : "Upload"}
           </button>
         </div>
       </div>

@@ -14,6 +14,7 @@ import ImageCropper from "../imageCropper";
 const Modals = ({ setShow }) => {
   const user = useSelector((user) => user.login.isLoggedIn);
   const [image, setImage] = useState();
+  const [loader, setLoader] = useState(false);
   const [cropData, setCropData] = useState("#");
   const cropperRef = useRef();
   const fileRef = useRef(null);
@@ -37,6 +38,7 @@ const Modals = ({ setShow }) => {
   };
   const getCropData = () => {
     if (typeof cropperRef.current?.cropper !== "undefined") {
+      setLoader(true);
       setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
       const message4 = cropperRef.current?.cropper
         .getCroppedCanvas()
@@ -52,6 +54,7 @@ const Modals = ({ setShow }) => {
               JSON.stringify({ ...user, photoURL: downloadURL })
             );
             setShow(false);
+            setLoader(false);
           });
         });
       });
@@ -97,6 +100,7 @@ const Modals = ({ setShow }) => {
             setImage={setImage}
             cropperRef={cropperRef}
             image={image}
+            loader={loader}
             getCropData={getCropData}
           />
         )}
