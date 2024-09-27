@@ -30,8 +30,8 @@ const Chatting = () => {
       set(push(ref(db, "singleMessage")), {
         whoSendName: user.displayName,
         whoSendId: user.uid,
-        whoReceiveName: singleFriend.name,
-        whoReceiveId: singleFriend.id,
+        whoReceiveName: singleFriend?.name,
+        whoReceiveId: singleFriend?.id,
         messages: messages,
         date: `${new Date().getFullYear()}-${
           new Date().getMonth() + 1
@@ -49,9 +49,9 @@ const Chatting = () => {
       snapshot.forEach((item) => {
         if (
           (user.uid == item.val().whoSendId &&
-            item.val().whoReceiveId == singleFriend.id) ||
+            item.val().whoReceiveId == singleFriend?.id) ||
           (user.uid == item.val().whoReceiveId &&
-            item.val().whoSendId == singleFriend.id)
+            item.val().whoSendId == singleFriend?.id)
         ) {
           singleMessageArray.push(item.val());
         }
@@ -98,8 +98,8 @@ const Chatting = () => {
           set(push(ref(db, "singleMessage")), {
             whoSendName: user.displayName,
             whoSendId: user.uid,
-            whoReceiveName: singleFriend.name,
-            whoReceiveId: singleFriend.id,
+            whoReceiveName: singleFriend?.name,
+            whoReceiveId: singleFriend?.id,
             messages: messages,
             image: downloadURL,
             date: `${new Date().getFullYear()}-${
@@ -127,15 +127,17 @@ const Chatting = () => {
       <div className="w-full h-[95vh] bg-white shadow-md">
         <div className="py-4 h-[10vh] bg-[#F9F9F9] px-6 rounded-md">
           <div className="flex items-center gap-x-2">
-            <div className="w-10 h-10 rounded-full bg-[#D9D9D9] overflow-hidden">
-              <img
-                src={singleFriend.profile || avatarImage}
-                className="w-full h-full object-cover"
-              />
-            </div>
+            {singleFriend != null && (
+              <div className="w-10 h-10 rounded-full bg-[#D9D9D9] overflow-hidden">
+                <img
+                  src={singleFriend?.profile}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
             <div>
               <span className="font-fontInter">
-                {singleFriend.name || "Please select user for chatting"}
+                {singleFriend?.name || "Please select user for chatting"}
               </span>
             </div>
           </div>
@@ -190,52 +192,54 @@ const Chatting = () => {
               ))
             : ""}
         </div>
-        <div className="py-2 h-[10vh">
-          <div className="bg-[#F5F5F5] w-[50vw] rounded-md mx-auto py-3 flex items-center justify-center gap-x-3">
-            <div className="flex items-center gap-x-2 w-[15%]">
-              <MicrophoneIcon />
-              <div className="relative">
+        {singleFriend != null && (
+          <div className="py-2 h-[10vh">
+            <div className="bg-[#F5F5F5] w-[50vw] rounded-md mx-auto py-3 flex items-center justify-center gap-x-3">
+              <div className="flex items-center gap-x-2 w-[15%]">
+                <MicrophoneIcon />
+                <div className="relative">
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => setEmojiShow((prev) => !prev)}
+                  >
+                    <SmileIcon />
+                  </div>
+                  {emojiShow && (
+                    <div className="absolute bottom-8 left-0">
+                      <EmojiPicker onEmojiClick={handleEmojiSelect} />
+                    </div>
+                  )}
+                </div>
                 <div
                   className="cursor-pointer"
-                  onClick={() => setEmojiShow((prev) => !prev)}
+                  onClick={() => chooseFile.current.click()}
                 >
-                  <SmileIcon />
+                  <GalleryIcon />
                 </div>
-                {emojiShow && (
-                  <div className="absolute bottom-8 left-0">
-                    <EmojiPicker onEmojiClick={handleEmojiSelect} />
-                  </div>
-                )}
-              </div>
-              <div
-                className="cursor-pointer"
-                onClick={() => chooseFile.current.click()}
-              >
-                <GalleryIcon />
+                <input
+                  ref={chooseFile}
+                  hidden
+                  type="file"
+                  accept="image/jpg,image/png,image/jpeg,image/avif"
+                  onChange={handleImageUpload}
+                />
               </div>
               <input
-                ref={chooseFile}
-                hidden
-                type="file"
-                accept="image/jpg,image/png,image/jpeg,image/avif"
-                onChange={handleImageUpload}
+                placeholder="type here...."
+                className="w-[60%] outline-none bg-[#F5F5F5]"
+                onChange={(e) => setMessages(e.target.value)}
+                value={messages}
+                onKeyUp={handleSendButton}
               />
+              <button
+                className="bg-[#3E8DEB] px-4 py-2 rounded-md font-fontInter text-sm text-white"
+                onClick={handleSendMessage}
+              >
+                Send
+              </button>
             </div>
-            <input
-              placeholder="type here...."
-              className="w-[60%] outline-none bg-[#F5F5F5]"
-              onChange={(e) => setMessages(e.target.value)}
-              value={messages}
-              onKeyUp={handleSendButton}
-            />
-            <button
-              className="bg-[#3E8DEB] px-4 py-2 rounded-md font-fontInter text-sm text-white"
-              onClick={handleSendMessage}
-            >
-              Send
-            </button>
           </div>
-        </div>
+        )}
       </div>
     </>
   );
