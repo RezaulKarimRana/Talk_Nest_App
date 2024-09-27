@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import manImage from "../../assets/man_avatar.png";
 import { UserAddIcon } from "../../svg/UserAddIcon";
+import man_avatar from "../../../public/images/man_avatar.png";
 import {
   getDatabase,
   ref,
@@ -64,10 +64,10 @@ const UserLists = () => {
     set(push(ref(db, "friendRequest")), {
       senderName: user.displayName,
       senderId: user.uid,
-      senderProfile: user.photoURL ?? "/src/assets/man_avatar.png",
+      senderProfile: user.photoURL ?? "/public/images/man_avatar.png",
       receiverName: data.username,
       receiverId: data.id,
-      receiverProfile: data.photoURL ?? "/src/assets/man_avatar.png",
+      receiverProfile: data.photoURL ?? "/public/images/man_avatar.png",
     });
   };
   //show friend request
@@ -125,7 +125,7 @@ const UserLists = () => {
             <div className="flex items-center gap-x-2">
               <div className="w-14 h-14 rounded-full overflow-hidden">
                 <img
-                  src={item.photoURL || manImage}
+                  src={item.photoURL || man_avatar}
                   className="w-full h-full object-cover"
                 />
               </div>

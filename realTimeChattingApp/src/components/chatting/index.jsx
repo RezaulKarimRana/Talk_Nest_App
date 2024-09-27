@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { MicrophoneIcon } from "../../svg/MicrophoneIcon";
 import { SmileIcon } from "../../svg/SmileIcon";
 import { GalleryIcon } from "../../svg/GalleryIcon";
-import avatarImage from "../../assets/man_avatar.png";
 import { useSelector } from "react-redux";
 import { getDatabase, set, ref, push, onValue } from "firebase/database";
 import { formatDistance } from "date-fns";

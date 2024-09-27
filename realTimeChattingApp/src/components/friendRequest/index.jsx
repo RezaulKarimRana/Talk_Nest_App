@@ -8,7 +8,7 @@ import {
 } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import avatarImage from "../../assets/man_avatar.png";
+import avatarImage from "../../../public/images/man_avatar.png";
 const FriendRequest = () => {
   const [friendReqList, setFriendReqList] = useState([]);
   const user = useSelector((user) => user.login.isLoggedIn);

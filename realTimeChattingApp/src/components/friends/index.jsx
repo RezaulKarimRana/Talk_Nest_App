@@ -2,7 +2,7 @@ import { getDatabase, onValue, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import avatarImage from "../../assets/man_avatar.png";
+import avatarImage from "../../../public/images/man_avatar.png";
 import { ActiveSingle } from "../../features/slices/activeSingleSlice";
 const Friends = () => {
   const location = useLocation();

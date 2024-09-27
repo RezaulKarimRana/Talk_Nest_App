@@ -3,7 +3,7 @@ import { HouseIcon } from "../../svg/HouseIcon";
 import { MessageTextIcon } from "../../svg/MessageTextIcon";
 import { BackSquareIcon } from "../../svg/BackSquareIcon";
 import { DirectBoxSendIcon } from "../../svg/DirectBoxSendIcon";
-import natureImage from "../../assets/nature.png";
+import natureImage from "../../../public/images/nature.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";

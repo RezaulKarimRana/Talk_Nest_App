@@ -3,7 +3,12 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../validation/Validation";
 import CircleLoader from "react-spinners/CircleLoader";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  updatePassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { LoggedInUser } from "../../features/slices/loginSlice";
 
@@ -85,6 +90,49 @@ const LoginFormComponent = ({ toast }) => {
         setLoading(false);
       });
   };
+  const handleForGotPassword = () => {
+    if (formik.values.email.length <= 0) {
+      toast.error("Please provide email", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+    sendPasswordResetEmail(auth, formik.values.email)
+      .then(() => {
+        toast.info("password reset link sent to your email", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        if (errorMessage == "Firebase: Error (auth/invalid-email).")
+          toast.info("email is not valid", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+      });
+  };
   return (
     <>
       <div className="w-5/6">
@@ -127,7 +175,12 @@ const LoginFormComponent = ({ toast }) => {
           >
             {loading ? <CircleLoader color="#fff" size={20} /> : "Sign In"}
           </button>
-          <p className="underline text-[#4A4A4A] mt-4">forgot password?</p>
+          <p
+            className="underline text-[#4A4A4A] mt-4 font-fontInter cursor-pointer"
+            onClick={handleForGotPassword}
+          >
+            forgot password?
+          </p>
           <p className="font-fontInter text-sm  mt-5">
             Don't have an account please{" "}
             <Link to="/registration" className="text-[#236DB0] hover:underline">
