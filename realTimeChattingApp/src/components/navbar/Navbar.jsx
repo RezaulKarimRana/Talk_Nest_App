@@ -3,7 +3,7 @@ import { HouseIcon } from "../../svg/HouseIcon";
 import { MessageTextIcon } from "../../svg/MessageTextIcon";
 import { BackSquareIcon } from "../../svg/BackSquareIcon";
 import { DirectBoxSendIcon } from "../../svg/DirectBoxSendIcon";
-import natureImage from "../../../public/images/nature.png";
+import man from "../../../public/images/man.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,14 +33,16 @@ const Navbar = () => {
     <>
       <div className="h-full w-1/12 flex flex-col justify-between py-3">
         <div className="flex flex-col items-center gap-y-2 relative">
-          <div className="w-24 h-24 rounded-full overflow-hidden">
-            <img src={user?.photoURL || natureImage} />
-          </div>
-          <div
-            className="text-white w-4 h-4 items-center justify-center absolute mt-9 mr-2 cursor-pointer"
-            onClick={() => setShow(true)}
-          >
-            <DirectBoxSendIcon />
+          <div className="relative group">
+            <div className="w-24 h-24 rounded-full overflow-hidden">
+              <img src={user.photoURL ?? man} />
+            </div>
+            <div
+              className="absolute h-24 w-24 rounded-full bg-black/30 flex items-center justify-center group-hover:bottom-0 opacity-0 group-hover:opacity-100 cursor-pointer text-white"
+              onClick={() => setShow(true)}
+            >
+              <DirectBoxSendIcon />
+            </div>
           </div>
           <div className="text-center">
             <span className="font-fontInter text-white text-sm">
