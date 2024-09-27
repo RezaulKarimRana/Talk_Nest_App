@@ -13,13 +13,13 @@ import { LoggedInUser } from "../../features/slices/loginSlice";
 import ImageCropper from "../imageCropper";
 const Modals = ({ setShow }) => {
   const user = useSelector((user) => user.login.isLoggedIn);
-  const storage = getStorage();
-  const auth = getAuth();
-  const storageRef = ref(storage, user);
   const [image, setImage] = useState();
-  const [cropData, setCropData] = useState();
+  const [cropData, setCropData] = useState("#");
   const cropperRef = useRef();
   const fileRef = useRef(null);
+  const storage = getStorage();
+  const storageRef = ref(storage, user.uid);
+  const auth = getAuth();
   const dispatch = useDispatch();
   const handleChange = (e) => {
     e.preventDefault();
