@@ -40,7 +40,7 @@ const LoginFormComponent = ({ toast }) => {
         const user = userCredential.user;
         if (user.emailVerified) {
           dispatch(LoggedInUser(user));
-          localStorage.setItem("user", JSON.stringify(user.uid));
+          localStorage.setItem("user", JSON.stringify(user));
           toast.success("Successfully Loggedin", {
             position: "top-right",
             autoClose: 1000,

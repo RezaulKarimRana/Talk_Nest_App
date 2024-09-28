@@ -1,4 +1,12 @@
-import { getDatabase, onValue, ref, remove } from "firebase/database";
+import {
+  getDatabase,
+  onValue,
+  push,
+  ref,
+  remove,
+  set,
+  update,
+} from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -11,7 +19,7 @@ const Friends = () => {
   const [friends, setFriends] = useState([]);
   const user = useSelector((user) => user.login.isLoggedIn);
   const db = getDatabase();
-  useEffect(() => {
+  const getFriends = () => {
     const starCountRef = ref(db, "friends/");
     let frndArr = [];
     onValue(starCountRef, (snapshot) => {
@@ -25,7 +33,10 @@ const Friends = () => {
       });
       setFriends(frndArr);
     });
-  }, [db, user.uid, friends]);
+  };
+  useEffect(() => {
+    getFriends();
+  }, [db, user.uid]);
   const handleSingleChat = (data) => {
     if (user.uid == data.receiverId) {
       dispatch(
@@ -68,15 +79,49 @@ const Friends = () => {
   const handleUnfriend = (itemId) => {
     const reqToUnfriend = friends.find((req) => req.id == itemId);
     if (reqToUnfriend) {
-      remove(ref(db, "friends/" + reqToUnfriend.id));
+      remove(ref(db, "friends/" + reqToUnfriend.id)).then(() => {
+        getFriends();
+      });
     }
   };
   const handleBlock = (itemId) => {
-    const reqToCancel = cancelReq.find(
-      (req) => req.receiverId == itemId && req.senderId == user.uid
-    );
-    if (reqToCancel) {
-      remove(ref(db, "friendRequest/" + reqToCancel.id));
+    const reqToBlock = friends.find((req) => req.id == itemId);
+    if (reqToBlock) {
+      const postData = {
+        id: reqToBlock.id,
+        isBlocked: true,
+        receiverId: reqToBlock.receiverId,
+        receiverName: reqToBlock.receiverName,
+        receiverProfile: reqToBlock.receiverProfile,
+        senderId: reqToBlock.senderId,
+        senderName: reqToBlock.senderName,
+        senderProfile: reqToBlock.senderProfile,
+      };
+      const updates = {};
+      updates["/friends/" + itemId] = postData;
+      update(ref(db), updates).then(() => {
+        getFriends();
+      });
+    }
+  };
+  const handleUnBlock = (itemId) => {
+    const reqToBlock = friends.find((req) => req.id == itemId);
+    if (reqToBlock) {
+      const postData = {
+        id: reqToBlock.id,
+        isBlocked: false,
+        receiverId: reqToBlock.receiverId,
+        receiverName: reqToBlock.receiverName,
+        receiverProfile: reqToBlock.receiverProfile,
+        senderId: reqToBlock.senderId,
+        senderName: reqToBlock.senderName,
+        senderProfile: reqToBlock.senderProfile,
+      };
+      const updates = {};
+      updates["/friends/" + itemId] = postData;
+      update(ref(db), updates).then(() => {
+        getFriends();
+      });
     }
   };
   return (
@@ -91,7 +136,10 @@ const Friends = () => {
             key={key}
             onClick={() => handleSingleChat(item)}
           >
-            <div className="flex items-center gap-x-2">
+            <div
+              className="flex items-center gap-x-2"
+              onClick={() => navigate("/message")}
+            >
               <div className="w-14 h-14 rounded-full overflow-hidden">
                 {user.uid == item.senderId ? (
                   <img src={item.receiverProfile || avatarImage} />
@@ -105,30 +153,30 @@ const Friends = () => {
                   : item.senderName}
               </h3>
             </div>
-            {location.pathname == "/" && (
+            <div className="flex items-center gap-x-2">
               <button
                 className="px-3 py-1 font-fontInter bg-[#4A81D3] text-white rounded-md"
-                onClick={() => navigate("/message")}
+                onClick={() => handleUnfriend(item.id)}
               >
-                Message
+                Unfriend
               </button>
-            )}
-            {location.pathname == "/message" && (
-              <div className="flex items-center gap-x-2">
-                <button
-                  className="px-3 py-1 font-fontInter bg-[#4A81D3] text-white rounded-md"
-                  onClick={() => handleUnfriend(item.id)}
-                >
-                  Unfriend
-                </button>
+              {!item.isBlocked && (
                 <button
                   className="px-3 py-1 font-fontInter bg-[#D34A4A] text-white rounded-md"
                   onClick={() => handleBlock(item.id)}
                 >
                   Block
                 </button>
-              </div>
-            )}
+              )}
+              {item.isBlocked && (
+                <button
+                  className="px-3 py-1 font-fontInter bg-[#D34A4A] text-white rounded-md"
+                  onClick={() => handleUnBlock(item.id)}
+                >
+                  UnBlock
+                </button>
+              )}
+            </div>
           </div>
         ))}
       </div>
