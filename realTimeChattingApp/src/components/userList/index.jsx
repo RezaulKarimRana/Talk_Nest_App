@@ -21,11 +21,27 @@ const UserLists = () => {
   const [friendReqList, setFriendReqList] = useState([]);
   const [cancelReq, setCancelReq] = useState([]);
   useEffect(() => {
+    //get all friends
+    let frndArr = [];
+    onValue(ref(db, "friends/"), (snapshot) => {
+      snapshot.forEach((item) => {
+        if (
+          user.uid == item.val().senderId ||
+          user.uid == item.val().receiverId
+        ) {
+          frndArr.push({ ...item.val(), id: item.key });
+        }
+      });
+    });
+
     const starCountRef = ref(db, "users/");
     onValue(starCountRef, (snapshot) => {
       const users = [];
       snapshot.forEach((userList) => {
-        if (user.uid !== userList.key) {
+        var alreadyFriend = frndArr.find(
+          (x) => x.receiverId == userList.key || x.senderId == userList.key
+        );
+        if (user.uid !== userList.key && alreadyFriend == null) {
           getDownloadURL(Ref(storage, userList.key))
             .then((downloadURL) => {
               users.push({

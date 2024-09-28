@@ -175,14 +175,14 @@ const Friends = () => {
             </div>
             <div className="flex items-center gap-x-2">
               <button
-                className="px-3 py-1 font-fontInter bg-[#4A81D3] text-white rounded-md"
+                className="cursor-pointer px-3 py-1 font-fontInter bg-[#4A81D3] text-white rounded-md"
                 onClick={() => handleUnfriend(item.id)}
               >
                 Unfriend
               </button>
               {!item.isBlocked && (
                 <button
-                  className="px-3 py-1 font-fontInter bg-[#D34A4A] text-white rounded-md"
+                  className="cursor-pointer px-3 py-1 font-fontInter bg-[#D34A4A] text-white rounded-md"
                   onClick={() => handleBlock(item.id)}
                 >
                   Block
@@ -190,7 +190,7 @@ const Friends = () => {
               )}
               {item.isBlocked && (
                 <button
-                  className="px-3 py-1 font-fontInter bg-[#D34A4A] text-white rounded-md"
+                  className="cursor-pointer px-3 py-1 font-fontInter bg-[#D34A4A] text-white rounded-md"
                   onClick={() => handleUnBlock(item.id)}
                 >
                   UnBlock
