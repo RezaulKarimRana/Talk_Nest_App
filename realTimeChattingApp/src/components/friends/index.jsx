@@ -77,7 +77,10 @@ const Friends = () => {
             key={key}
             onClick={() => handleSingleChat(item)}
           >
-            <div className="flex items-center gap-x-2">
+            <div
+              className="flex items-center gap-x-2"
+              onClick={() => navigate("/message")}
+            >
               <div className="w-14 h-14 rounded-full overflow-hidden">
                 {user.uid == item.senderId ? (
                   <img src={item.receiverProfile || avatarImage} />
@@ -91,24 +94,14 @@ const Friends = () => {
                   : item.senderName}
               </h3>
             </div>
-            {location.pathname == "/" && (
-              <button
-                className="px-3 py-1 font-fontInter bg-[#4A81D3] text-white rounded-md"
-                onClick={() => navigate("/message")}
-              >
-                Message
+            <div className="flex items-center gap-x-2">
+              <button className="px-3 py-1 font-fontInter bg-[#4A81D3] text-white rounded-md">
+                Unfriend
               </button>
-            )}
-            {location.pathname == "/message" && (
-              <div className="flex items-center gap-x-2">
-                <button className="px-3 py-1 font-fontInter bg-[#4A81D3] text-white rounded-md">
-                  Unfriend
-                </button>
-                <button className="px-3 py-1 font-fontInter bg-[#D34A4A] text-white rounded-md">
-                  Block
-                </button>
-              </div>
-            )}
+              <button className="px-3 py-1 font-fontInter bg-[#D34A4A] text-white rounded-md">
+                Block
+              </button>
+            </div>
           </div>
         ))}
       </div>
