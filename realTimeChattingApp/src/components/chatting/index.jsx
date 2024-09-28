@@ -2,12 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { MicrophoneIcon } from "../../svg/MicrophoneIcon";
 import { SmileIcon } from "../../svg/SmileIcon";
 import { GalleryIcon } from "../../svg/GalleryIcon";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { getDatabase, set, ref, push, onValue } from "firebase/database";
 import { formatDistance } from "date-fns";
 import EmojiPicker from "emoji-picker-react";
 import { ToastContainer, toast } from "react-toastify";
 import CircleLoader from "react-spinners/CircleLoader";
+import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 import {
   getStorage,
   ref as Ref,
@@ -25,10 +26,16 @@ const Chatting = () => {
   const [emojiShow, setEmojiShow] = useState(false);
   const [allMessages, setAllMessages] = useState([]);
   const db = getDatabase();
-  const dispatch = useDispatch();
   const storage = getStorage();
   const chooseFile = useRef(null);
   const scrollRef = useRef(null);
+  const recorderControls = useAudioRecorder(
+    {
+      noiseSuppression: true,
+      echoCancellation: true,
+    },
+    (err) => console.table(err) // onNotAllowedOrFound
+  );
   const handleSendMessage = () => {
     if (loading) return;
     if (singleFriend?.status == "single" && messages.length > 0) {
@@ -139,6 +146,13 @@ const Chatting = () => {
     if (loading) return;
     if (e.key == "Enter") handleSendMessage();
   };
+  const addAudioElement = (blob) => {
+    const url = URL.createObjectURL(blob);
+    const audio = document.createElement("audio");
+    audio.src = url;
+    audio.controls = true;
+    //document.body.appendChild(audio);
+  };
   return (
     <>
       <ToastContainer />
@@ -221,7 +235,12 @@ const Chatting = () => {
           <div className="py-2 h-[10vh">
             <div className="bg-[#F5F5F5] w-[50vw] rounded-md mx-auto py-3 flex items-center justify-center gap-x-3">
               <div className="flex items-center gap-x-2 w-[15%]">
-                <MicrophoneIcon />
+                <div
+                  className="cursor-pointer"
+                  onClick={() => recorderControls.startRecording()}
+                >
+                  <MicrophoneIcon />
+                </div>
                 <div className="relative">
                   <div
                     className="cursor-pointer"
@@ -256,6 +275,13 @@ const Chatting = () => {
                 value={messages}
                 onKeyUp={handleSendButton}
               />
+              <div className={!recorderControls.isRecording ? "hidden" : ""}>
+                <AudioRecorder
+                  onRecordingComplete={(blob) => addAudioElement(blob)}
+                  recorderControls={recorderControls}
+                  showVisualizer={true}
+                />
+              </div>
               {selectedImage && (
                 <img className="w-12 h-12" src={selectedImage} />
               )}
