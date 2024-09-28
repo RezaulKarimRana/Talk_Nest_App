@@ -1,7 +1,7 @@
 import { getDatabase, onValue, ref, remove, update } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import avatarImage from "../../../public/images/man_avatar.png";
 import { ActiveSingle } from "../../features/slices/activeSingleSlice";
 const Friends = () => {
@@ -146,7 +146,13 @@ const Friends = () => {
         </h1>
         {friends?.map((item, key) => (
           <div
-            className="flex items-center justify-between mt-3 hover:bg-[#efefef] px-2 py-2 cursor-pointer transition-all ease-linear duration-100 rounded-md"
+            className={
+              (singleFriend.id == item.senderId ||
+              singleFriend.id == item.receiverId
+                ? "sticky top-0"
+                : "") +
+              " flex items-center justify-between mt-3 hover:bg-[#efefef] px-2 py-2 cursor-pointer transition-all ease-linear duration-100 rounded-md"
+            }
             key={key}
             onClick={() => handleSingleChat(item)}
           >
