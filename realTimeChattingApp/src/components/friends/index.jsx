@@ -1,23 +1,15 @@
-import {
-  getDatabase,
-  onValue,
-  push,
-  ref,
-  remove,
-  set,
-  update,
-} from "firebase/database";
+import { getDatabase, onValue, ref, remove, update } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import avatarImage from "../../../public/images/man_avatar.png";
 import { ActiveSingle } from "../../features/slices/activeSingleSlice";
 const Friends = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [friends, setFriends] = useState([]);
   const user = useSelector((user) => user.login.isLoggedIn);
+  const singleFriend = useSelector((single) => single?.active.active);
   const db = getDatabase();
   const getFriends = () => {
     const starCountRef = ref(db, "friends/");
@@ -45,6 +37,7 @@ const Friends = () => {
           id: data.senderId,
           name: data.senderName,
           profile: data.senderProfile,
+          isBlocked: data.isBlocked,
         })
       );
       localStorage.setItem(
@@ -54,6 +47,7 @@ const Friends = () => {
           id: data.senderId,
           name: data.senderName,
           profile: data.senderProfile,
+          isBlocked: data.isBlocked,
         })
       );
     } else {
@@ -63,6 +57,7 @@ const Friends = () => {
           id: data.receiverId,
           name: data.receiverName,
           profile: data.receiverProfile,
+          isBlocked: data.isBlocked,
         })
       );
       localStorage.setItem(
@@ -72,6 +67,7 @@ const Friends = () => {
           id: data.receiverId,
           name: data.receiverName,
           profile: data.receiverProfile,
+          isBlocked: data.isBlocked,
         })
       );
     }
@@ -100,6 +96,15 @@ const Friends = () => {
       const updates = {};
       updates["/friends/" + itemId] = postData;
       update(ref(db), updates).then(() => {
+        dispatch(
+          ActiveSingle({
+            status: "single",
+            id: singleFriend.id,
+            name: singleFriend.name,
+            profile: singleFriend.profile,
+            isBlocked: true,
+          })
+        );
         getFriends();
       });
     }
@@ -120,6 +125,15 @@ const Friends = () => {
       const updates = {};
       updates["/friends/" + itemId] = postData;
       update(ref(db), updates).then(() => {
+        dispatch(
+          ActiveSingle({
+            status: "single",
+            id: singleFriend.id,
+            name: singleFriend.name,
+            profile: singleFriend.profile,
+            isBlocked: false,
+          })
+        );
         getFriends();
       });
     }

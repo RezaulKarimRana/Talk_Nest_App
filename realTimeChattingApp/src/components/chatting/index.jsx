@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { MicrophoneIcon } from "../../svg/MicrophoneIcon";
 import { SmileIcon } from "../../svg/SmileIcon";
 import { GalleryIcon } from "../../svg/GalleryIcon";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getDatabase, set, ref, push, onValue } from "firebase/database";
 import { formatDistance } from "date-fns";
 import EmojiPicker from "emoji-picker-react";
@@ -25,6 +25,7 @@ const Chatting = () => {
   const [emojiShow, setEmojiShow] = useState(false);
   const [allMessages, setAllMessages] = useState([]);
   const db = getDatabase();
+  const dispatch = useDispatch();
   const storage = getStorage();
   const chooseFile = useRef(null);
   const scrollRef = useRef(null);
@@ -209,7 +210,14 @@ const Chatting = () => {
               ))
             : ""}
         </div>
-        {singleFriend != null && (
+        {singleFriend != null && singleFriend?.isBlocked && (
+          <div className="py-2 h-[10vh">
+            <div className="bg-[#F5F5F5] w-[50vw] rounded-md mx-auto py-3 flex items-center justify-center gap-x-3">
+              <label className="font-fontInter">This chat is blocked</label>
+            </div>
+          </div>
+        )}
+        {singleFriend != null && !singleFriend?.isBlocked && (
           <div className="py-2 h-[10vh">
             <div className="bg-[#F5F5F5] w-[50vw] rounded-md mx-auto py-3 flex items-center justify-center gap-x-3">
               <div className="flex items-center gap-x-2 w-[15%]">
