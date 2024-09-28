@@ -149,22 +149,28 @@ const UserLists = () => {
                 {item.username}
               </h3>
             </div>
-            {friendReqList.includes(item.id + "" + user.uid) ||
-            friendReqList.includes(user.uid + "" + item.id) ? (
+            {friendReqList.includes(item.id + "" + user.uid) && (
               <button
                 className="px-3 py-1 font-fontInter bg-[#D34A4A] text-white rounded-md"
                 onClick={() => handleCancelReq(item.id)}
               >
                 Cancel
               </button>
-            ) : (
-              <div
-                className="text-black cursor-pointer"
-                onClick={() => handleFriendRequest(item)}
-              >
-                <UserAddIcon />
-              </div>
             )}
+            {friendReqList.includes(user.uid + "" + item.id) && (
+              <p className="font-fontInter flex text-[#D34A4A] text-sm ml-2">
+                Sent you Request
+              </p>
+            )}
+            {!friendReqList.includes(item.id + "" + user.uid) &&
+              !friendReqList.includes(user.uid + "" + item.id) && (
+                <div
+                  className="text-black cursor-pointer"
+                  onClick={() => handleFriendRequest(item)}
+                >
+                  <UserAddIcon />
+                </div>
+              )}
           </div>
         ))}
       </div>
