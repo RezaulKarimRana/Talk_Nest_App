@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import avatarImage from "../../../public/images/man_avatar.png";
 import { ActiveSingle } from "../../features/slices/activeSingleSlice";
+import { UserListRender } from "../../features/slices/reRenderSlice";
 const Friends = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [friends, setFriends] = useState([]);
   const user = useSelector((user) => user.login.isLoggedIn);
   const singleFriend = useSelector((single) => single?.active.active);
+  const userRendered = useSelector((render) => render.reRender.userRendered);
   const db = getDatabase();
   const getFriends = () => {
     const starCountRef = ref(db, "friends/");
@@ -77,6 +79,11 @@ const Friends = () => {
     if (reqToUnfriend) {
       remove(ref(db, "friends/" + reqToUnfriend.id)).then(() => {
         getFriends();
+        dispatch(
+          UserListRender({
+            isRendered: !userRendered,
+          })
+        );
       });
     }
   };
@@ -147,8 +154,8 @@ const Friends = () => {
         {friends?.map((item, key) => (
           <div
             className={
-              (singleFriend.id == item.senderId ||
-              singleFriend.id == item.receiverId
+              (singleFriend?.id == item.senderId ||
+              singleFriend?.id == item.receiverId
                 ? "sticky top-0"
                 : "") +
               " flex items-center justify-between mt-3 hover:bg-[#efefef] px-2 py-2 cursor-pointer transition-all ease-linear duration-100 rounded-md"

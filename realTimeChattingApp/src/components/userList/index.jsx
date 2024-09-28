@@ -14,6 +14,7 @@ import { getDownloadURL, getStorage, ref as Ref } from "firebase/storage";
 const UserLists = () => {
   const [search, setSearch] = useState("");
   const user = useSelector((user) => user.login.isLoggedIn);
+  const reRenderUser = useSelector((render) => render.reRender.userRendered);
   const db = getDatabase();
   const storage = getStorage();
   const [users, setUsers] = useState([]);
@@ -23,6 +24,8 @@ const UserLists = () => {
   useEffect(() => {
     //get all friends
     let frndArr = [];
+    setUsers([]);
+    setsearchUsers([]);
     onValue(ref(db, "friends/"), (snapshot) => {
       snapshot.forEach((item) => {
         if (
@@ -33,7 +36,6 @@ const UserLists = () => {
         }
       });
     });
-
     const starCountRef = ref(db, "users/");
     onValue(starCountRef, (snapshot) => {
       const users = [];
@@ -74,7 +76,7 @@ const UserLists = () => {
         }
       });
     });
-  }, [db, user.uid, storage]);
+  }, [db, user.uid, storage, reRenderUser]);
   //send friend Request
   const handleFriendRequest = (data) => {
     set(push(ref(db, "friendRequest")), {

@@ -7,11 +7,14 @@ import {
   set,
 } from "firebase/database";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import avatarImage from "../../../public/images/man_avatar.png";
+import { UserListRender } from "../../features/slices/reRenderSlice";
 const FriendRequest = () => {
   const [friendReqList, setFriendReqList] = useState([]);
   const user = useSelector((user) => user.login.isLoggedIn);
+  const userRendered = useSelector((render) => render.reRender.userRendered);
+  const dispatch = useDispatch();
   const db = getDatabase();
   useEffect(() => {
     const starCountRef = ref(db, "friendRequest/");
@@ -29,11 +32,23 @@ const FriendRequest = () => {
     set(push(ref(db, "friends")), {
       ...data,
     }).then(() => {
-      remove(ref(db, "friendRequest/" + data.id));
+      remove(ref(db, "friendRequest/" + data?.id)).then(() => {
+        dispatch(
+          UserListRender({
+            isRendered: !userRendered,
+          })
+        );
+      });
     });
   };
   const handleReject = (data) => {
-    remove(ref(db, "friendRequest/" + data.id));
+    remove(ref(db, "friendRequest/" + data?.id)).then(() => {
+      dispatch(
+        UserListRender({
+          isRendered: !userRendered,
+        })
+      );
+    });
   };
   return (
     <>
