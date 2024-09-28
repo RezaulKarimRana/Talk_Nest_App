@@ -1,4 +1,4 @@
-import { getDatabase, onValue, ref } from "firebase/database";
+import { getDatabase, onValue, ref, remove } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -25,7 +25,7 @@ const Friends = () => {
       });
       setFriends(frndArr);
     });
-  }, [db, user.uid]);
+  }, [db, user.uid, friends]);
   const handleSingleChat = (data) => {
     if (user.uid == data.receiverId) {
       dispatch(
@@ -65,6 +65,20 @@ const Friends = () => {
       );
     }
   };
+  const handleUnfriend = (itemId) => {
+    const reqToUnfriend = friends.find((req) => req.id == itemId);
+    if (reqToUnfriend) {
+      remove(ref(db, "friends/" + reqToUnfriend.id));
+    }
+  };
+  const handleBlock = (itemId) => {
+    const reqToCancel = cancelReq.find(
+      (req) => req.receiverId == itemId && req.senderId == user.uid
+    );
+    if (reqToCancel) {
+      remove(ref(db, "friendRequest/" + reqToCancel.id));
+    }
+  };
   return (
     <>
       <div className="shadow-md rounded-md bg-white p-3 h-[95vh] overflow-y-auto scrollbar-thin">
@@ -77,10 +91,7 @@ const Friends = () => {
             key={key}
             onClick={() => handleSingleChat(item)}
           >
-            <div
-              className="flex items-center gap-x-2"
-              onClick={() => navigate("/message")}
-            >
+            <div className="flex items-center gap-x-2">
               <div className="w-14 h-14 rounded-full overflow-hidden">
                 {user.uid == item.senderId ? (
                   <img src={item.receiverProfile || avatarImage} />
@@ -94,14 +105,30 @@ const Friends = () => {
                   : item.senderName}
               </h3>
             </div>
-            <div className="flex items-center gap-x-2">
-              <button className="px-3 py-1 font-fontInter bg-[#4A81D3] text-white rounded-md">
-                Unfriend
+            {location.pathname == "/" && (
+              <button
+                className="px-3 py-1 font-fontInter bg-[#4A81D3] text-white rounded-md"
+                onClick={() => navigate("/message")}
+              >
+                Message
               </button>
-              <button className="px-3 py-1 font-fontInter bg-[#D34A4A] text-white rounded-md">
-                Block
-              </button>
-            </div>
+            )}
+            {location.pathname == "/message" && (
+              <div className="flex items-center gap-x-2">
+                <button
+                  className="px-3 py-1 font-fontInter bg-[#4A81D3] text-white rounded-md"
+                  onClick={() => handleUnfriend(item.id)}
+                >
+                  Unfriend
+                </button>
+                <button
+                  className="px-3 py-1 font-fontInter bg-[#D34A4A] text-white rounded-md"
+                  onClick={() => handleBlock(item.id)}
+                >
+                  Block
+                </button>
+              </div>
+            )}
           </div>
         ))}
       </div>
