@@ -149,6 +149,7 @@ const Chatting = () => {
     if (e.key == "Enter") handleSendMessage();
   };
   const addAudioElement = (blob) => {
+    if (loading) return;
     const uid = uuid();
     const url = URL.createObjectURL(blob);
     const audio = document.createElement("audio");
@@ -161,8 +162,27 @@ const Chatting = () => {
     const metadata = {
       contentType: "audio/mp3",
     };
+    setLoading(true);
     uploadBytes(storageRef, blob, metadata).then((snapshot) => {
-      console.log("Uploaded a blob or file!");
+      getDownloadURL(snapshot.ref).then((downloadURL) => {
+        set(push(ref(db, "singleMessage")), {
+          whoSendName: user.displayName,
+          whoSendId: user.uid,
+          whoReceiveName: singleFriend?.name,
+          whoReceiveId: singleFriend?.id,
+          messages: messages,
+          audio: downloadURL,
+          date: `${new Date().getFullYear()}-${
+            new Date().getMonth() + 1
+          }-${new Date().getDate()}-${new Date().getHours()}:${new Date().getMinutes()}`,
+        }).then(() => {
+          setMessages("");
+          setEmojiShow(false);
+          setSelectedImage(null);
+          setImageFile(null);
+          setLoading(false);
+        });
+      });
     });
   };
   return (
