@@ -211,13 +211,27 @@ const Chatting = () => {
             ? allMessages?.map((item, i) => (
                 <div key={i} ref={scrollRef}>
                   {item.whoSendId == user.uid ? (
-                    item.image ? (
+                    item.audio ? (
+                      <div className="w-[30%] ml-auto my-3 overflow-hidden">
+                        <audio src={item.audio} controls></audio>
+                        <span className="mt-2 text-sm text-slate-500">
+                          {formatDistance(item.date, new Date(), {
+                            addSuffix: true,
+                          })}
+                        </span>
+                      </div>
+                    ) : item.image ? (
                       <div className="w-[30%] ml-auto overflow-hidden">
                         <img
                           src={item.image}
                           alt="image"
                           className="w-full h-full object-cover rounded-md"
                         />
+                        <span className="mt-2 text-sm text-slate-500">
+                          {formatDistance(item.date, new Date(), {
+                            addSuffix: true,
+                          })}
+                        </span>
                       </div>
                     ) : (
                       <div className="w-[60%] ml-auto flex flex-col items-end">
@@ -231,6 +245,15 @@ const Chatting = () => {
                         </span>
                       </div>
                     )
+                  ) : item.audio ? (
+                    <div className="w-[30%] mr-auto my-3 overflow-hidden">
+                      <audio src={item.audio} controls></audio>
+                      <span className="mt-2 text-sm text-slate-500">
+                        {formatDistance(item.date, new Date(), {
+                          addSuffix: true,
+                        })}
+                      </span>
+                    </div>
                   ) : item.image ? (
                     <div className="w-[30%] mr-auto my-3 overflow-hidden">
                       <img
@@ -238,6 +261,11 @@ const Chatting = () => {
                         alt="image"
                         className="w-full h-full object-cover rounded-md"
                       />
+                      <span className="mt-2 text-sm text-slate-500">
+                        {formatDistance(item.date, new Date(), {
+                          addSuffix: true,
+                        })}
+                      </span>
                     </div>
                   ) : (
                     <div className="w-[60%] mr-auto my-3 flex flex-col items-start">
