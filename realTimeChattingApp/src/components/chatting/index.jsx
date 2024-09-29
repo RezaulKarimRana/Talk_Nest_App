@@ -9,11 +9,13 @@ import EmojiPicker from "emoji-picker-react";
 import { ToastContainer, toast } from "react-toastify";
 import CircleLoader from "react-spinners/CircleLoader";
 import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
+import uuid from "react-uuid";
 import {
   getStorage,
   ref as Ref,
   uploadBytesResumable,
   getDownloadURL,
+  uploadBytes,
 } from "firebase/storage";
 
 const Chatting = () => {
@@ -147,11 +149,21 @@ const Chatting = () => {
     if (e.key == "Enter") handleSendMessage();
   };
   const addAudioElement = (blob) => {
+    const uid = uuid();
     const url = URL.createObjectURL(blob);
     const audio = document.createElement("audio");
     audio.src = url;
     audio.controls = true;
-    //document.body.appendChild(audio);
+    const storageRef = Ref(
+      storage,
+      `${user.username} = sendAudioMessage/${uid}`
+    );
+    const metadata = {
+      contentType: "audio/mp3",
+    };
+    uploadBytes(storageRef, blob, metadata).then((snapshot) => {
+      console.log("Uploaded a blob or file!");
+    });
   };
   return (
     <>
