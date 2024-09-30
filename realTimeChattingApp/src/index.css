@@ -4,13 +4,13 @@
 
 @font-face {
   font-family: "joti-one";
-  src: url("../public/fonts/JotiOne-Regular.ttf");
+  src: url("/fonts/JotiOne-Regular.ttf");
 }
 @font-face {
   font-family: "inter";
-  src: url("../public/fonts/Inter-VariableFont_opsz\,wght.ttf");
+  src: url("/fonts/Inter-VariableFont_opsz\,wght.ttf");
 }
 @font-face {
   font-family: "inter-bold";
-  src: url("../public/fonts/Inter_24pt-Bold.ttf");
+  src: url("/fonts/Inter_24pt-Bold.ttf");
 }

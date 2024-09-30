@@ -8,7 +8,7 @@ import {
 } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import avatarImage from "../../../public/images/man_avatar.png";
+import avatarImage from "/images/man_avatar.png";
 import { UserListRender } from "../../features/slices/reRenderSlice";
 const FriendRequest = () => {
   const [friendReqList, setFriendReqList] = useState([]);

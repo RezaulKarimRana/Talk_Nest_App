@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { UserAddIcon } from "../../svg/UserAddIcon";
-import man_avatar from "../../../public/images/man_avatar.png";
+import man_avatar from "/images/man_avatar.png";
 import {
   getDatabase,
   ref,
@@ -82,10 +82,10 @@ const UserLists = () => {
     set(push(ref(db, "friendRequest")), {
       senderName: user.displayName,
       senderId: user.uid,
-      senderProfile: user.photoURL ?? "/public/images/man_avatar.png",
+      senderProfile: user.photoURL ?? "/images/man_avatar.png",
       receiverName: data.username,
       receiverId: data.id,
-      receiverProfile: data.photoURL ?? "/public/images/man_avatar.png",
+      receiverProfile: data.photoURL ?? "/images/man_avatar.png",
     });
   };
   //show friend request
