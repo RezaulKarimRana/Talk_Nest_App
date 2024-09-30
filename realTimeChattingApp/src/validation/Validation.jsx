@@ -12,7 +12,7 @@ export const registration = Yup.object({
   password: Yup.string()
     .min(5)
     .matches(
-      /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/,
+      /(?=.*[!@#$%^&*_])/,
       "Password must be at least one special character"
     )
     .required("Password is required"),

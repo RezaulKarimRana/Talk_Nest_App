@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { registration } from "../../validation/Validation";
+import { IoEye } from "react-icons/io5";
+import { IoEyeOff } from "react-icons/io5";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -12,6 +14,8 @@ import { getDatabase, ref, set } from "firebase/database";
 import CircleLoader from "react-spinners/CircleLoader";
 const RegistrationFormComponent = ({ toast }) => {
   const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const db = getDatabase();
   const auth = getAuth();
   const navigate = useNavigate();
@@ -101,7 +105,7 @@ const RegistrationFormComponent = ({ toast }) => {
   };
   return (
     <>
-      <div>
+      <div className="w-5/6">
         <form onSubmit={formik.handleSubmit}>
           <div className="mt-1">
             <label className="font-fontInter text-[#484848]">Enter Name</label>
@@ -137,13 +141,21 @@ const RegistrationFormComponent = ({ toast }) => {
             <label className="font-fontInter text-[#484848]">
               Enter Password
             </label>
-            <input
-              className="w-full px-3 py-2 border rounded-md outline-none mb-4 mt-1"
-              name="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              type="password"
-            />
+            <div className="flex relative">
+              <input
+                className="w-full px-3 py-2 border rounded-md outline-none mb-4 mt-1"
+                name="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                type={show ? "text" : "password"}
+              />
+              <div
+                onClick={() => setShow(!show)}
+                className="cursor-pointer absolute end-0 mt-4 mr-2"
+              >
+                {show ? <IoEyeOff /> : <IoEye />}
+              </div>
+            </div>
             {formik.errors.password && formik.touched.password && (
               <p className="font-fontInter text-red-500 text-sm mb-5">
                 {formik.errors.password}
@@ -154,13 +166,21 @@ const RegistrationFormComponent = ({ toast }) => {
             <label className="font-fontInter text-[#484848]">
               Enter Confirm Password
             </label>
-            <input
-              className="w-full px-3 py-2 border rounded-md outline-none mb-4 mt-1"
-              name="confirmPassword"
-              value={formik.values.confirmPassword}
-              onChange={formik.handleChange}
-              type="password"
-            />
+            <div className="flex relative">
+              <input
+                className="w-full px-3 py-2 border rounded-md outline-none mb-4 mt-1"
+                name="confirmPassword"
+                value={formik.values.confirmPassword}
+                onChange={formik.handleChange}
+                type={showConfirm ? "text" : "password"}
+              />
+              <div
+                onClick={() => setShowConfirm(!showConfirm)}
+                className="cursor-pointer absolute end-0 mt-4 mr-2"
+              >
+                {showConfirm ? <IoEyeOff /> : <IoEye />}
+              </div>
+            </div>
             {formik.errors.confirmPassword &&
               formik.touched.confirmPassword && (
                 <p className="font-fontInter text-red-500 text-sm mb-5">
